@@ -37,8 +37,10 @@ public class JwtUtils {
                 .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(jwt);
+            System.out.println("JWT validation successful");
             return true;
         } catch (Exception e) {
+            System.out.println("JWT validation failed: " + e.getMessage());
             return false;
         }
     }

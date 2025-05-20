@@ -4,12 +4,13 @@ import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 
 @Entity
+@Table(name = "roles")
 public class Role implements GrantedAuthority {
 
     public enum RoleName {
-        ROLE_JOB_SEEKER,
-        ROLE_EMPLOYER,
-        ROLE_ADMIN
+        JOB_SEEKER,
+        EMPLOYER,
+        ADMIN
     }
 
     @Id

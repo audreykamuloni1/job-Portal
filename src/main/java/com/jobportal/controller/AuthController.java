@@ -26,11 +26,9 @@ public class AuthController {
     private final JwtUtils jwtUtils;
 
     @Autowired
-    public AuthController(
-        UserService userService,
-        AuthenticationManager authenticationManager,
-        JwtUtils jwtUtils
-    ) {
+    public AuthController(UserService userService,
+                          AuthenticationManager authenticationManager,
+                          JwtUtils jwtUtils) {
         this.userService = userService;
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
@@ -42,7 +40,7 @@ public class AuthController {
             userService.registerUser(registerRequest);
             return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Registration failed: " + e.getMessage());
         }
     }
 
@@ -50,16 +48,26 @@ public class AuthController {
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         try {
             Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
+                new UsernamePasswordAuthenticationToken(
+                    loginRequest.getUsername(), loginRequest.getPassword()
+                )
             );
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
             String jwt = jwtUtils.generateJwtToken(userDetails.getUsername());
-            return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
+
+            return ResponseEntity.ok(new JwtResponse(
+                jwt,
+                userDetails.getUsername(),
+                userDetails.getAuthorities()
+            ));
+
         } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username/password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Login failed: " + e.getMessage());
         }
     }
 }
