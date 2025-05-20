@@ -2,25 +2,36 @@ package com.jobportal.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ApplicationDTO {
+    
     private Long id;
+    
+    @NotBlank(message = "Cover letter is required")
+    private String coverLetter;
+    
+    private LocalDateTime applicationDate;
+    
+    private String status;
     
     @NotNull(message = "Job ID is required")
     private Long jobId;
     
-    @NotBlank(message = "Cover letter cannot be empty")
-    private String coverLetter;
+    private String jobTitle;
     
-    private String status;
-
-    // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public Long getJobId() { return jobId; }
-    public void setJobId(Long jobId) { this.jobId = jobId; }
-    public String getCoverLetter() { return coverLetter; }
-    public void setCoverLetter(String coverLetter) { this.coverLetter = coverLetter; }
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    @NotNull(message = "Applicant ID is required")
+    private Long applicantId;
+    
+    private String applicantName;
+    
+    // Additional fields that might be needed when retrieving applications
+    private String resume;
 }

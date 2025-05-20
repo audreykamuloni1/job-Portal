@@ -1,14 +1,9 @@
 package com.jobportal.security;
 
-import com.jobportal.security.jwt.JwtUtils;
-import com.jobportal.service.UserService;
-
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import com.jobportal.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,109 +11,56 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@ConditionalOnProperty(
-    name = "spring.security.enabled", 
-    havingValue = "true", 
-    matchIfMissing = true
-)
 public class SecurityConfig {
 
-    private final JwtUtils jwtUtils;
-    private final UserService userService;
+    private final JwtAuthenticationFilter jwtAuthFilter;
+    private final AuthenticationProvider authenticationProvider;
 
-    public SecurityConfig(JwtUtils jwtUtils, UserService userService) {
-        this.jwtUtils = jwtUtils;
-        this.userService = userService;
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter, AuthenticationProvider authenticationProvider) {
+        this.jwtAuthFilter = jwtAuthFilter;
+        this.authenticationProvider = authenticationProvider;
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(AbstractHttpConfigurer::disable)
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .sessionManagement(session -> 
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                // Public endpoints
-                .requestMatchers(
-                    new AntPathRequestMatcher("/api/auth/**"),
-                    new AntPathRequestMatcher("/h2-console/**"),
-                    new AntPathRequestMatcher("/error")
-                ).permitAll()
-                
-                // Public GET endpoints
-                .requestMatchers(
-                    new AntPathRequestMatcher("/api/jobs/**", HttpMethod.GET.name())
-                ).permitAll()
-
-                // Job Seeker endpoints
-                .requestMatchers(
-                    new AntPathRequestMatcher("/api/applications/**", HttpMethod.POST.name())
-                ).hasAuthority("ROLE_JOB_SEEKER")
-                .requestMatchers(
-                    new AntPathRequestMatcher("/api/applications/user/**", HttpMethod.GET.name())
-                ).hasAuthority("ROLE_JOB_SEEKER")
-
-                // Employer endpoints
-                .requestMatchers(
-                    new AntPathRequestMatcher("/api/applications/job/**", HttpMethod.GET.name())
-                ).hasAuthority("ROLE_EMPLOYER")
-                .requestMatchers(
-                    new AntPathRequestMatcher("/api/jobs/**", HttpMethod.POST.name())
-                ).hasAuthority("ROLE_EMPLOYER")
-                .requestMatchers(
-                    new AntPathRequestMatcher("/api/jobs/**", HttpMethod.PUT.name())
-                ).hasAnyAuthority("ROLE_EMPLOYER", "ROLE_ADMIN")
-                .requestMatchers(
-                    new AntPathRequestMatcher("/api/jobs/**", HttpMethod.DELETE.name())
-                ).hasAnyAuthority("ROLE_EMPLOYER", "ROLE_ADMIN")
-                .requestMatchers(
-                    new AntPathRequestMatcher("/api/employer/**")
-                ).hasAuthority("ROLE_EMPLOYER")
-
-                // Admin endpoints
-                .requestMatchers(
-                    new AntPathRequestMatcher("/api/admin/**")
-                ).hasAuthority("ROLE_ADMIN")
-
-                // Catch-all rule
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/public/**").permitAll()
+                .requestMatchers("/api/jobs").permitAll()
+                .requestMatchers("/api/jobs/search").permitAll()
+                .requestMatchers("/api/jobs/{id}").permitAll()
+                .requestMatchers("/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .anyRequest().authenticated()
             )
-            .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            .authenticationProvider(authenticationProvider)
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-        http.headers(headers -> headers.frameOptions().disable());
         return http.build();
     }
 
     @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter(jwtUtils, userService);
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(
-        AuthenticationConfiguration authenticationConfiguration
-    ) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
-
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:8091"));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true);
+        configuration.setExposedHeaders(List.of("Authorization", "Content-Type"));
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
