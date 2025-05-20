@@ -1,9 +1,14 @@
 package com.jobportal.controller;
 
 import com.jobportal.dto.ApplicationDTO;
+import com.jobportal.model.User;
 import com.jobportal.service.ApplicationService;
+import com.jobportal.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,35 +18,41 @@ import java.util.List;
 public class ApplicationController {
 
     private final ApplicationService applicationService;
+    private final UserService userService;
 
-    public ApplicationController(ApplicationService applicationService) {
+    public ApplicationController(ApplicationService applicationService, 
+                                UserService userService) {
         this.applicationService = applicationService;
+        this.userService = userService;
     }
 
-    // Submit a new job application
     @PostMapping
-    public ResponseEntity<String> applyToJob(@Valid @RequestBody ApplicationDTO applicationDTO) {
-        applicationService.applyToJob(applicationDTO);
-        return ResponseEntity.ok("Application submitted successfully!");
+    public ResponseEntity<String> createApplication(
+            @Valid @RequestBody ApplicationDTO applicationDTO,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        
+        User user = userService.getUserByUsername(userDetails.getUsername());
+        applicationService.createApplication(applicationDTO, user.getId());
+        return new ResponseEntity<>("Application submitted successfully!", HttpStatus.CREATED);
     }
 
-    // Get all applications for a specific job (for employers)
     @GetMapping("/job/{jobId}")
     public ResponseEntity<List<ApplicationDTO>> getApplicationsByJob(@PathVariable Long jobId) {
-        return ResponseEntity.ok(applicationService.getApplicationsByJob(jobId));
+        return ResponseEntity.ok(applicationService.getApplicationsByJobId(jobId));
     }
 
-    // Get all applications submitted by a specific user (for job seekers)
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<ApplicationDTO>> getApplicationsByUser(@PathVariable Long userId) {
-        return ResponseEntity.ok(applicationService.getApplicationsByUser(userId));
+    @GetMapping("/my-applications")
+    public ResponseEntity<List<ApplicationDTO>> getMyApplications(
+            @AuthenticationPrincipal UserDetails userDetails) {
+        User user = userService.getUserByUsername(userDetails.getUsername());
+        return ResponseEntity.ok(applicationService.getApplicationsByUserId(user.getId()));
     }
 
-    //  Update application status (e.g., approve/reject)
     @PutMapping("/{applicationId}/status")
-    public ResponseEntity<String> updateStatus(@PathVariable Long applicationId,
-                                               @RequestParam String status) {
+    public ResponseEntity<String> updateApplicationStatus(
+            @PathVariable Long applicationId,
+            @RequestParam String status) {
         applicationService.updateApplicationStatus(applicationId, status);
-        return ResponseEntity.ok("Application status updated!");
+        return ResponseEntity.ok("Application status updated successfully!");
     }
 }

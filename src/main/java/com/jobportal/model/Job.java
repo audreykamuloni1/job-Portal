@@ -13,9 +13,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-/**
- * Represents a job posting created by an employer.
- */
+// Represents a job posting created by an employer.
 @Entity
 @Table(name = "jobs")
 @Getter
@@ -85,5 +83,15 @@ public class Job {
         PENDING,   // Awaiting admin review
         APPROVED,  // Approved by admin
         REJECTED   // Rejected by admin
+    }
+    
+    // Explicit getter to match lombok naming convention
+    public boolean isActive() {
+        return isActive;
+    }
+    
+    // Explicit setter to match lombok naming convention
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }

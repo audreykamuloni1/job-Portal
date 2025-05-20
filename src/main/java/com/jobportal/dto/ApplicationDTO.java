@@ -1,29 +1,26 @@
 package com.jobportal.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
-@Data // Lombok annotation to generate getters, setters, equals, hashCode, and toString
-@NoArgsConstructor // Generates a no-argument constructor
-@AllArgsConstructor // Generates a constructor with all fields
 public class ApplicationDTO {
-
-    private Long id; // ID of the application 
-    @NotBlank(message = "Cover letter cannot be blank")
-    private String coverLetter; // Cover letter submitted by the applicant
-
-    private LocalDateTime applicationDate; // Automatically set when creating the application
-
-    private String status; // Optional status (Pending, Approved, Rejected)
-
+    private Long id;
+    
     @NotNull(message = "Job ID is required")
-    private Long jobId; // The ID of the job being applied to
+    private Long jobId;
+    
+    @NotBlank(message = "Cover letter cannot be empty")
+    private String coverLetter;
+    
+    private String status;
 
-    @NotNull(message = "Applicant ID is required")
-    private Long applicantId; // The ID of the user applying to the job
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public Long getJobId() { return jobId; }
+    public void setJobId(Long jobId) { this.jobId = jobId; }
+    public String getCoverLetter() { return coverLetter; }
+    public void setCoverLetter(String coverLetter) { this.coverLetter = coverLetter; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 }

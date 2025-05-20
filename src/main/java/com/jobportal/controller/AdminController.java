@@ -1,8 +1,12 @@
 package com.jobportal.controller;
 
+import com.jobportal.model.Job;
+import com.jobportal.model.User;
 import com.jobportal.service.AdminService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -28,5 +32,27 @@ public class AdminController {
         return ResponseEntity.ok("Job rejected successfully.");
     }
 
-    // Additional endpoints for user management can be added here
+    // Get all pending jobs that need approval
+    @GetMapping("/jobs/pending")
+    public ResponseEntity<List<Job>> getPendingJobs() {
+        return ResponseEntity.ok(adminService.getPendingJobs());
+    }
+
+    // User management endpoints
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok(adminService.getAllUsers());
+    }
+
+    @PutMapping("/users/{userId}/deactivate")
+    public ResponseEntity<String> deactivateUser(@PathVariable Long userId) {
+        adminService.deactivateUser(userId);
+        return ResponseEntity.ok("User deactivated successfully.");
+    }
+
+    @PutMapping("/users/{userId}/activate")
+    public ResponseEntity<String> activateUser(@PathVariable Long userId) {
+        adminService.activateUser(userId);
+        return ResponseEntity.ok("User activated successfully.");
+    }
 }

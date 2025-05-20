@@ -1,9 +1,11 @@
 package com.jobportal.service;
 
+import com.jobportal.exception.ResourceNotFoundException;
 import com.jobportal.model.Job;
 import com.jobportal.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,23 +20,48 @@ public class JobService {
         this.jobRepository = jobRepository;
     }
 
+    @Transactional
     public Job createJob(Job job) {
+        // Jobs are pending by default, will require admin approval
+        job.setStatus(Job.Status.PENDING);
         return jobRepository.save(job);
     }
 
     public List<Job> getAllJobs() {
-        return jobRepository.findAll();
+        // Return only active jobs that have been approved
+        return jobRepository.findAll().stream()
+                .filter(job -> job.isActive() && job.getStatus() == Job.Status.APPROVED)
+                .toList();
     }
 
     public Optional<Job> getJobById(Long id) {
         return jobRepository.findById(id);
     }
 
+    public Job getJobByIdOrThrow(Long id) {
+        return jobRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Job not found with id: " + id));
+    }
+
+    @Transactional
     public Job updateJob(Job job) {
+        // Check if job exists
+        if (!jobRepository.existsById(job.getId())) {
+            throw new ResourceNotFoundException("Job not found with id: " + job.getId());
+        }
+        
+        // Set back to pending status if substantial changes are made
+        // This is optional and depends on business rules
+        job.setStatus(Job.Status.PENDING);
+        
         return jobRepository.save(job);
     }
 
+    @Transactional
     public void deleteJob(Long id) {
+        if (!jobRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Job not found with id: " + id);
+        }
         jobRepository.deleteById(id);
     }
 

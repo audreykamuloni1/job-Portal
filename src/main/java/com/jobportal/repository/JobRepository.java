@@ -12,6 +12,8 @@ public interface JobRepository extends JpaRepository<Job, Long> {
     
     List<Job> findByIsActiveTrue();
     
+    List<Job> findByStatus(Job.Status status);
+    
     @Query("SELECT j FROM Job j WHERE j.isActive = true AND " +
            "(LOWER(j.title) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
            "LOWER(j.description) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +

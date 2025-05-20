@@ -6,20 +6,19 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import java.security.Key;
-import java.util.Base64; // Correct import
+import java.util.Base64;
 import java.util.Date;
 
 @Component
 public class JwtUtils {
 
     @Value("${jwt.secret}")
-    private String jwtSecret; // Should be a Base64-encoded string
+    private String jwtSecret;
 
     @Value("${jwt.expirationMs}")
     private int jwtExpirationMs;
 
     private Key getSigningKey() {
-        // Decode Base64 string to bytes first
         byte[] keyBytes = Base64.getDecoder().decode(jwtSecret);
         return Keys.hmacShaKeyFor(keyBytes);
     }
