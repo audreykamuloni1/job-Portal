@@ -250,7 +250,7 @@
   background: #2563eb;
 }
 
-/* Loading State */
+
 .loading-state {
   text-align: center;
   padding: 4rem 2rem;
@@ -270,7 +270,7 @@
   to { transform: rotate(360deg); }
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
   .job-list-header h1 {
     font-size: 2rem;
@@ -283,7 +283,7 @@
   .filter-select {
     width: 100%;
   }
-  /* Post Job Error Styling */
+ 
 .post-error {
   background: #fef2f2;
   border: 1px solid #fecaca;

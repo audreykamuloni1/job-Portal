@@ -8,7 +8,7 @@ const RegisterPage = () => {
     username: '',
     email: '',
     password: '',
-    userType: 'JOB_SEEKER', // default selection
+    userType: 'JOB_SEEKER', 
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');

@@ -19,7 +19,7 @@ const DashboardRedirect = () => {
     }
   }, [user, loading, navigate]);
 
-  // Optionally, display a loader
+  
   return <div>Loading dashboard...</div>;
 };
 

@@ -8,13 +8,13 @@ const login = async (userData) => {
     userData,
     { headers: { 'Content-Type': 'application/json' } }
   );
-  // Map backend response to what your app expects
+ 
   return {
-    token: response.data.token, // backend provides 'token'
+    token: response.data.token, 
     user: {
       username: response.data.username,
       roles: response.data.roles,
-      type: response.data.type, // if you want to keep 'Bearer'
+      type: response.data.type, 
     }
   };
 };

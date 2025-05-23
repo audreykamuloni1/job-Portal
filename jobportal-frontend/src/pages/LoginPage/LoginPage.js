@@ -27,9 +27,9 @@ const LoginPage = () => {
     }
 
     try {
-      // Only calls login, does NOT set localStorage
+      
       const { token, user } = await authService.login(formData);
-      login(user, token); // This calls AuthContext's login, which sets localStorage
+      login(user, token); 
       navigate('/dashboard');
     } catch (err) {
       setError(
