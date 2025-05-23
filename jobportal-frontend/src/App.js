@@ -11,6 +11,10 @@ import JobSeekerDashboard from './pages/Dashboard/JobSeekerDashboard';
 import EmployerDashboard from './pages/Dashboard/EmployerDashboard';
 import DashboardRedirect from './pages/Dashboard/DashboardRedirect';
 import RoleProtectedRoute from './components/RoleProtectedRoute';
+// Employer Pages
+import EmployerProfilePage from './pages/Dashboard/Employer/EmployerProfilePage';
+import PostJobPage from './pages/Dashboard/Employer/PostJobPage';
+import ManageJobsPage from './pages/Dashboard/Employer/ManageJobsPage';
 import './App.css';
 
 // ProtectedRoute for general authentication
@@ -58,14 +62,23 @@ function App() {
                 }
               />
               {/* Employer Dashboard (only for employers) */}
+              {/* Employer Dashboard (only for employers) - Now with nested routes */}
               <Route
                 path="/dashboard/employer"
                 element={
                   <RoleProtectedRoute allowedRoles={['ROLE_EMPLOYER']}>
-                    <EmployerDashboard />
+                    <EmployerDashboard /> 
                   </RoleProtectedRoute>
                 }
-              />
+              >
+                {/* Default content for /dashboard/employer is handled within EmployerDashboard.js */}
+                {/* Child routes will be rendered by the <Outlet /> in EmployerDashboard */}
+                <Route path="profile" element={<EmployerProfilePage />} />
+                <Route path="post-job" element={<PostJobPage />} />
+                <Route path="manage-jobs" element={<ManageJobsPage />} />
+                {/* An index route could be added here if EmployerDashboard itself shouldn't show default content */}
+                {/* <Route index element={<SomeEmployerWelcomeComponent />} /> */}
+              </Route>
 
               {/* Catch-all route */}
               <Route path="*" element={<Navigate to="/" replace />} />

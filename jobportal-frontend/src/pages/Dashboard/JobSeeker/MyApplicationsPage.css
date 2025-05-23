@@ -1,0 +1,28 @@
+.my-applications-container {
+    padding: 20px;
+}
+.application-summary-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+.application-summary-card h3 {
+    margin-top: 0;
+}
+.error-message {
+    color: red;
+}
+.status-pending {
+    font-weight: bold;
+    color: #ffa500; /* Orange */
+}
+.status-approved {
+    font-weight: bold;
+    color: #4caf50; /* Green */
+}
+.status-rejected {
+    font-weight: bold;
+    color: #f44336; /* Red */
+}

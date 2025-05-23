@@ -14,7 +14,7 @@ const Applications = () => {
         return;
       }
       try {
-        const res = await applicationService.getApplicationsByUser(user.id);
+        const res = await applicationService.getApplicationsByUser();
         setApplications(res.data);
       } catch (err) {
         setApplications([]);

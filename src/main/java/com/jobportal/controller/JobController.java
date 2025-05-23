@@ -10,6 +10,9 @@ import com.jobportal.service.JobService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -46,20 +49,19 @@ public class JobController {
     }
 
     @PostMapping
-    public ResponseEntity<JobDTO> createJob(@Valid @RequestBody JobDTO jobDTO) {
+    @PreAuthorize("hasAuthority('ROLE_EMPLOYER')")
+    public ResponseEntity<JobDTO> createJob(@Valid @RequestBody JobDTO jobDTO, @AuthenticationPrincipal UserDetails userDetails) {
         jobDTO.setPostedDate(LocalDateTime.now());
 
-        // Fetch employer by ID from the DTO
-        Long employerId = jobDTO.getEmployerId();
-        if (employerId == null) {
-            throw new ResourceNotFoundException("Employer ID must be provided");
-        }
-        User employer = userRepository.findById(employerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Employer not found with id: " + employerId));
+        User employer = userRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new ResourceNotFoundException("Employer not found with username: " + userDetails.getUsername()));
 
         // Map DTO to entity and set employer
         Job job = jobMapper.toEntity(jobDTO);
         job.setEmployer(employer);
+        // Ensure DTO reflects the employer ID for the response, if mapper doesn't handle it
+        jobDTO.setEmployerId(employer.getId());
+
 
         Job savedJob = jobService.createJob(job);
 
@@ -67,12 +69,18 @@ public class JobController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_EMPLOYER')")
     public ResponseEntity<JobDTO> updateJob(@PathVariable Long id, @Valid @RequestBody JobDTO jobDTO) {
         Job existingJob = jobService.getJobByIdOrThrow(id);
 
+        // Optional: Add ownership check here if feasible
+        // if (!existingJob.getEmployer().getUsername().equals(userDetails.getUsername())) {
+        // throw new AccessDeniedException("You do not have permission to update this job.");
+        // }
+
         jobDTO.setId(id);
         Job jobToUpdate = jobMapper.toEntity(jobDTO);
-        jobToUpdate.setEmployer(existingJob.getEmployer());
+        jobToUpdate.setEmployer(existingJob.getEmployer()); // Preserve original employer
 
         Job updatedJob = jobService.updateJob(jobToUpdate);
 
@@ -80,7 +88,13 @@ public class JobController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_EMPLOYER')")
     public ResponseEntity<Void> deleteJob(@PathVariable Long id) {
+        // Optional: Add ownership check here
+        // Job job = jobService.getJobByIdOrThrow(id);
+        // if (!job.getEmployer().getUsername().equals(userDetails.getUsername())) {
+        // throw new AccessDeniedException("You do not have permission to delete this job.");
+        // }
         jobService.deleteJob(id);
         return ResponseEntity.noContent().build();
     }
@@ -105,13 +119,13 @@ public class JobController {
         return ResponseEntity.ok(jobDTOs);
     }
 
-    @GetMapping("/employer/{employerId}")
-    public ResponseEntity<List<JobDTO>> getJobsByEmployer(@PathVariable Long employerId) {
-        if (!userRepository.existsById(employerId)) {
-            throw new ResourceNotFoundException("Employer not found with id: " + employerId);
-        }
+    @GetMapping("/employer/my-jobs")
+    @PreAuthorize("hasAuthority('ROLE_EMPLOYER')")
+    public ResponseEntity<List<JobDTO>> getJobsByEmployer(@AuthenticationPrincipal UserDetails userDetails) {
+        User employer = userRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new ResourceNotFoundException("Employer not found with username: " + userDetails.getUsername()));
 
-        List<Job> jobs = jobService.getJobsByEmployerId(employerId);
+        List<Job> jobs = jobService.getJobsByEmployerId(employer.getId());
         List<JobDTO> jobDTOs = jobs.stream()
                 .map(jobMapper::toDTO)
                 .collect(Collectors.toList());

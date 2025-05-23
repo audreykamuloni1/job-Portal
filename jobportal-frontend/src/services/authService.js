@@ -9,12 +9,12 @@ const login = async (userData) => {
     { headers: { 'Content-Type': 'application/json' } }
   );
  
+  // Directly use response.data.roles as it's already an array of strings
   return {
     token: response.data.token, 
     user: {
       username: response.data.username,
-      roles: response.data.roles,
-      type: response.data.type, 
+      roles: response.data.roles, // Use roles directly from the response
     }
   };
 };

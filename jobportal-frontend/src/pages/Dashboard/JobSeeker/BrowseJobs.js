@@ -52,7 +52,7 @@ const BrowseJobs = () => {
       coverLetter,
     };
     try {
-      await applicationService.applyToJob(applicationDTO, user.id);
+      await applicationService.applyToJob(applicationDTO);
       alert('Application submitted successfully!');
     } catch (err) {
       alert('Failed to submit application. You may have already applied.');

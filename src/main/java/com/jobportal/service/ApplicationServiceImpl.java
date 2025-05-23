@@ -19,14 +19,17 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ApplicationRepository applicationRepository;
     private final UserRepository userRepository;
     private final JobRepository jobRepository;
+    private final EmailService emailService; // Added EmailService
 
     @Autowired
     public ApplicationServiceImpl(ApplicationRepository applicationRepository,
                                  UserRepository userRepository,
-                                 JobRepository jobRepository) {
+                                 JobRepository jobRepository,
+                                 EmailService emailService) { // Added EmailService to constructor
         this.applicationRepository = applicationRepository;
         this.userRepository = userRepository;
         this.jobRepository = jobRepository;
+        this.emailService = emailService; // Initialize EmailService
     }
 
     @Override
@@ -64,8 +67,23 @@ public class ApplicationServiceImpl implements ApplicationService {
     public void updateApplicationStatus(Long applicationId, String status) {
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new RuntimeException("Application not found"));
-        application.setStatus(Application.ApplicationStatus.valueOf(status));
+        application.setStatus(Application.ApplicationStatus.valueOf(status.toUpperCase())); // Ensure status is uppercase for enum matching
         applicationRepository.save(application);
+
+        // Send email notification if status is APPROVED
+        if (Application.ApplicationStatus.APPROVED.name().equalsIgnoreCase(status)) {
+            User applicant = application.getApplicant();
+            Job job = application.getJob();
+            if (applicant != null && applicant.getEmail() != null && !applicant.getEmail().isEmpty() && job != null) {
+                String subject = "Your Application for '" + job.getTitle() + "' has been Approved!";
+                String text = "Dear " + applicant.getUsername() + ",\n\n" +
+                              "Congratulations! Your application for the position of '" +
+                              job.getTitle() + "' has been approved.\n\n" +
+                              "The employer will contact you with further details.\n\n" +
+                              "Best regards,\nThe Job Portal Team";
+                emailService.sendSimpleEmail(applicant.getEmail(), subject, text);
+            }
+        }
     }
 
     private ApplicationDTO convertToDTO(Application application) {

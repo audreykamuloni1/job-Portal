@@ -22,8 +22,8 @@ public class JobService {
 
     @Transactional
     public Job createJob(Job job) {
-        // Jobs are pending by default, will require admin approval
-        job.setStatus(Job.Status.PENDING);
+        // Jobs are now approved by default
+        job.setStatus(Job.Status.APPROVED);
         return jobRepository.save(job);
     }
 
@@ -50,9 +50,8 @@ public class JobService {
             throw new ResourceNotFoundException("Job not found with id: " + job.getId());
         }
         
-        // Set back to pending status if substantial changes are made
-        // This is optional and depends on business rules
-        job.setStatus(Job.Status.PENDING);
+        // Ensure updated jobs are also set to approved status
+        job.setStatus(Job.Status.APPROVED);
         
         return jobRepository.save(job);
     }
