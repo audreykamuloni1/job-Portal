@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import JobDetailsModal from './JobDetailsModal';
-import applicationService from '../../services/applicationService';
-import authService from '../../services/authService';
+import applicationService from '../../../services/applicationService';
+import authService from '../../../services/authService';
 import axios from 'axios';
 
 const BrowseJobs = () => {
@@ -52,7 +52,7 @@ const BrowseJobs = () => {
       coverLetter,
     };
     try {
-      await applicationService.applyToJob(applicationDTO, user.id);
+      await applicationService.applyToJob(applicationDTO);
       alert('Application submitted successfully!');
     } catch (err) {
       alert('Failed to submit application. You may have already applied.');

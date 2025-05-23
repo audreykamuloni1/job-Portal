@@ -55,7 +55,15 @@ public class JobMapper {
         
         if (job.getEmployer() != null) {
             dto.setEmployerId(job.getEmployer().getId());
-            dto.setEmployerName(job.getEmployer().getUsername());
+            // Attempt to get company name from employer's profile
+            if (job.getEmployer().getEmployerProfile() != null && 
+                job.getEmployer().getEmployerProfile().getCompanyName() != null &&
+                !job.getEmployer().getEmployerProfile().getCompanyName().isEmpty()) {
+                dto.setEmployerName(job.getEmployer().getEmployerProfile().getCompanyName());
+            } else {
+                // Fallback to username if company name is not available or profile doesn't exist
+                dto.setEmployerName(job.getEmployer().getUsername()); 
+            }
         }
         
         return dto;

@@ -1,88 +1,76 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
+import authService from '../../../services/authService';
+import applicationService from '../../../services/applicationService';
 
 const Profile = () => {
-  const [profile, setProfile] = useState(null);
-  const [editMode, setEditMode] = useState(false);
-  const [form, setForm] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState('');
+  const [resumeFile, setResumeFile] = useState(null);
+  const [uploadStatus, setUploadStatus] = useState('');
+  const fileInputRef = useRef();
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      setLoading(true);
-      setError('');
-      try {
-        const token = localStorage.getItem('token');
-        const res = await axios.get('/api/jobseeker/me', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setProfile(res.data);
-        setForm(res.data);
-      } catch (err) {
-        setError('Failed to load profile');
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProfile();
-  }, []);
-
-  const handleChange = e => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleFileChange = (e) => {
+    setResumeFile(e.target.files[0]);
+    setUploadStatus('');
   };
 
-  const handleSubmit = async e => {
-    e.preventDefault();
-    setSaving(true);
-    setError('');
+  const handleUpload = async () => {
+    if (!resumeFile) {
+      setUploadStatus('Please choose a file.');
+      return;
+    }
+    const formData = new FormData();
+    formData.append('file', resumeFile);
+
     try {
-      const token = localStorage.getItem('token');
-      await axios.put('/api/jobseeker/me', form, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setProfile(form);
-      setEditMode(false);
+      const token = localStorage.getItem('authToken');
+      await axios.post(
+        '/api/resume/upload',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
+      setUploadStatus('Resume uploaded successfully!');
+      fileInputRef.current.value = '';
     } catch (err) {
-      setError('Failed to update profile');
-    } finally {
-      setSaving(false);
+      setUploadStatus('Upload failed: ' + (err.response?.data || err.message));
     }
   };
 
-  if (loading) return <p>Loading profile...</p>;
-  if (error) return <p>{error}</p>;
-  if (!profile) return <p>No profile data found.</p>;
+  // Optional: Download the current resume
+  const handleDownload = async () => {
+    try {
+      const token = localStorage.getItem('authToken');
+      const res = await axios.get('/api/resume/download', {
+        headers: { 'Authorization': `Bearer ${token}` },
+        responseType: 'blob'
+      });
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'resume.pdf');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      setUploadStatus('Failed to download current resume.');
+    }
+  };
 
   return (
     <div>
       <h2>Profile</h2>
-      {!editMode ? (
-        <div>
-          <p><b>Name:</b> {profile.name}</p>
-          <p><b>Email:</b> {profile.email}</p>
-          <p><b>Phone:</b> {profile.phone}</p>
-          <button onClick={() => setEditMode(true)}>Edit Profile</button>
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit}>
-          <label>
-            Name: <input name="name" value={form.name || ''} onChange={handleChange} />
-          </label>
-          <br />
-          <label>
-            Email: <input name="email" value={form.email || ''} onChange={handleChange} />
-          </label>
-          <br />
-          <label>
-            Phone: <input name="phone" value={form.phone || ''} onChange={handleChange} />
-          </label>
-          <br />
-          <button type="submit" disabled={saving}>{saving ? 'Saving...' : 'Save'}</button>
-          <button type="button" onClick={() => setEditMode(false)} disabled={saving}>Cancel</button>
-        </form>
-      )}
+      {/* ...other profile fields... */}
+      <div>
+        <h3>Upload/Update Resume (PDF, DOC, DOCX)</h3>
+        <input type="file" accept=".pdf,.doc,.docx" ref={fileInputRef} onChange={handleFileChange} />
+        <button onClick={handleUpload}>Upload Resume</button>
+        <button onClick={handleDownload} style={{marginLeft: '10px'}}>Download Current Resume</button>
+        {uploadStatus && <p>{uploadStatus}</p>}
+      </div>
     </div>
   );
 };

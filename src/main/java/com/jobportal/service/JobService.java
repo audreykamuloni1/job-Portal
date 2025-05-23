@@ -22,11 +22,12 @@ public class JobService {
 
     @Transactional
     public Job createJob(Job job) {
-        // Jobs are pending by default, will require admin approval
-        job.setStatus(Job.Status.PENDING);
+        // Jobs are now approved by default
+        job.setStatus(Job.Status.APPROVED);
         return jobRepository.save(job);
     }
 
+    @Transactional(readOnly = true)
     public List<Job> getAllJobs() {
         // Return only active jobs that have been approved
         return jobRepository.findAll().stream()
@@ -34,10 +35,12 @@ public class JobService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public Optional<Job> getJobById(Long id) {
         return jobRepository.findById(id);
     }
 
+    @Transactional(readOnly = true)
     public Job getJobByIdOrThrow(Long id) {
         return jobRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Job not found with id: " + id));
@@ -50,9 +53,8 @@ public class JobService {
             throw new ResourceNotFoundException("Job not found with id: " + job.getId());
         }
         
-        // Set back to pending status if substantial changes are made
-        // This is optional and depends on business rules
-        job.setStatus(Job.Status.PENDING);
+        // Ensure updated jobs are also set to approved status
+        job.setStatus(Job.Status.APPROVED);
         
         return jobRepository.save(job);
     }
@@ -65,15 +67,29 @@ public class JobService {
         jobRepository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     public List<Job> searchJobs(String keyword) {
         return jobRepository.searchJobs(keyword);
     }
 
+    @Transactional(readOnly = true)
     public List<Job> searchJobsByKeywordLocationAndType(String keyword, String location, String jobType) {
         return jobRepository.searchJobsByKeywordLocationAndType(keyword, location, jobType);
     }
 
+    @Transactional(readOnly = true)
     public List<Job> getJobsByEmployerId(Long employerId) {
         return jobRepository.findByEmployer_Id(employerId);
+    }
+
+    @Transactional(readOnly = true)
+    public long getTotalJobsPostedByEmployer(Long employerId) {
+        return jobRepository.countByEmployerId(employerId);
+    }
+
+    @Transactional(readOnly = true)
+    public long getActiveJobsCountByEmployer(Long employerId) {
+        
+        return jobRepository.countByEmployerIdAndIsActiveAndStatus(employerId, true, Job.Status.APPROVED);
     }
 }

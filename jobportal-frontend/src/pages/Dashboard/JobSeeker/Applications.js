@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import applicationService from '../../services/applicationService';
-import authService from '../../services/authService';
+import applicationService from '../../../services/applicationService';
+import authService from '../../../services/authService';
 
 const Applications = () => {
   const [applications, setApplications] = useState([]);
@@ -14,7 +14,7 @@ const Applications = () => {
         return;
       }
       try {
-        const res = await applicationService.getApplicationsByUser(user.id);
+        const res = await applicationService.getApplicationsByUser();
         setApplications(res.data);
       } catch (err) {
         setApplications([]);

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import jobService from '../../services/jobService'; // Import jobService
 import './JobListPage.css';
 
 const JobListPage = () => {
@@ -23,25 +24,23 @@ const JobListPage = () => {
 
   useEffect(() => {
     const fetchJobs = async () => {
-      try {
-        setLoading(true);
-        // Empty array to simulate new platform with no jobs
-        const emptyJobs = [];
-        
-        setTimeout(() => {
-          setJobs(emptyJobs);
-          setFilteredJobs(emptyJobs);
-          setLoading(false);
-        }, 1000);
-
-      } catch (error) {
-        console.error('Error fetching jobs:', error);
-        setLoading(false);
-      }
+        try {
+            setLoading(true);
+            const data = await jobService.getAllJobs(); // Use jobService
+            setJobs(data || []);
+            setFilteredJobs(data || []); // Initialize filteredJobs with all jobs
+        } catch (error) {
+            console.error('Error fetching jobs:', error);
+            setJobs([]); // Set to empty on error
+            setFilteredJobs([]);
+            // Optionally set an error state to display to the user
+        } finally {
+            setLoading(false);
+        }
     };
 
     fetchJobs();
-  }, []);
+  }, []); // Empty dependency array to run once on mount
 
   useEffect(() => {
     const filterJobs = () => {

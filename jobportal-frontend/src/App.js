@@ -6,11 +6,19 @@ import HomePage from './pages/HomePage/HomePage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 import JobListPage from './pages/JobListPage/JobListPage';
-// Use these imports for dashboards and redirector:
-import JobSeekerDashboard from './pages/Dashboard/JobSeekerDashboard';
+
+import JobSeekerDashboardLayout from './pages/Dashboard/JobSeeker/JobSeekerDashboardLayout';
+import JobSeekerProfilePage from './pages/Dashboard/JobSeeker/JobSeekerProfilePage';
+import MyApplicationsPage from './pages/Dashboard/JobSeeker/MyApplicationsPage';
+import JobSeekerHome from './pages/Dashboard/JobSeeker/JobSeekerHome'; // Import JobSeekerHome
 import EmployerDashboard from './pages/Dashboard/EmployerDashboard';
 import DashboardRedirect from './pages/Dashboard/DashboardRedirect';
 import RoleProtectedRoute from './components/RoleProtectedRoute';
+// Employer Pages
+import EmployerProfilePage from './pages/Dashboard/Employer/EmployerProfilePage';
+import PostJobPage from './pages/Dashboard/Employer/PostJobPage';
+import ManageJobsPage from './pages/Dashboard/Employer/ManageJobsPage';
+import EmployerHome from './pages/Dashboard/Employer/EmployerHome'; // Import EmployerHome
 import './App.css';
 
 // ProtectedRoute for general authentication
@@ -48,24 +56,35 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              {/* Job Seeker Dashboard (only for job seekers) */}
+              {/* Job Seeker Dashboard (only for job seekers) - Now with nested routes */}
               <Route
                 path="/dashboard/job-seeker"
                 element={
                   <RoleProtectedRoute allowedRoles={['ROLE_JOB_SEEKER']}>
-                    <JobSeekerDashboard />
+                    <JobSeekerDashboardLayout />
                   </RoleProtectedRoute>
                 }
-              />
-              {/* Employer Dashboard (only for employers) */}
+              >
+                <Route index element={<JobSeekerHome />} /> {/* This is the new default */}
+                <Route path="profile" element={<JobSeekerProfilePage />} />
+                <Route path="my-applications" element={<MyApplicationsPage />} />
+                {/* The "Browse Jobs" link in JobSeekerDashboardLayout points to /jobs, which is a top-level route */}
+              </Route>
+              
+              {/* Employer Dashboard (only for employers) - Now with nested routes */}
               <Route
                 path="/dashboard/employer"
                 element={
                   <RoleProtectedRoute allowedRoles={['ROLE_EMPLOYER']}>
-                    <EmployerDashboard />
+                    <EmployerDashboard /> 
                   </RoleProtectedRoute>
                 }
-              />
+              >
+                <Route index element={<EmployerHome />} /> {/* This is the new default */}
+                <Route path="profile" element={<EmployerProfilePage />} />
+                <Route path="post-job" element={<PostJobPage />} />
+                <Route path="manage-jobs" element={<ManageJobsPage />} />
+              </Route>
 
               {/* Catch-all route */}
               <Route path="*" element={<Navigate to="/" replace />} />

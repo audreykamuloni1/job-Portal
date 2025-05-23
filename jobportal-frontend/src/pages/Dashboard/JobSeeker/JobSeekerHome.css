@@ -1,0 +1,102 @@
+/* JobSeekerHome.css */
+.jobseeker-home-container {
+  padding: 0px; /* Content area already has padding from DashboardLayout.css */
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns */
+  gap: 20px;
+}
+
+.profile-summary-panel h4 {
+  font-size: 1.2em;
+  color: #3498db; /* Primary color for name */
+  margin-bottom: 5px;
+}
+
+.profile-summary-panel p {
+  margin-bottom: 8px;
+  font-size: 0.95em;
+  color: #555;
+}
+.profile-summary-panel p strong {
+  color: #333;
+}
+
+.recent-applications-panel ul,
+.latest-jobs-panel ul {
+  list-style: none;
+  padding: 0;
+}
+
+.recent-applications-panel li,
+.latest-jobs-panel li {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+.recent-applications-panel li:last-child,
+.latest-jobs-panel li:last-child {
+  border-bottom: none;
+}
+
+.recent-applications-panel li a,
+.latest-jobs-panel li a {
+  text-decoration: none;
+  color: #3498db;
+  font-weight: bold;
+}
+.recent-applications-panel li a:hover,
+.latest-jobs-panel li a:hover {
+  text-decoration: underline;
+}
+
+.recent-applications-panel li p,
+.latest-jobs-panel li p {
+  margin: 5px 0;
+  font-size: 0.9em;
+}
+.recent-applications-panel li small,
+.latest-jobs-panel li small {
+  font-size: 0.8em;
+  color: #777;
+}
+
+/* General dashboard button styles (can be moved to DashboardLayout.css if widely used) */
+.dashboard-button, .dashboard-button-secondary {
+  display: inline-block;
+  padding: 8px 15px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.9em;
+  margin-top: 10px;
+  margin-right: 10px;
+  transition: background-color 0.2s;
+  cursor: pointer;
+  text-align: center;
+}
+
+.dashboard-button {
+  background-color: #3498db; /* Primary color from DashboardLayout.css */
+  color: white;
+  border: 1px solid #3498db;
+}
+.dashboard-button:hover {
+  background-color: #2980b9;
+}
+
+.dashboard-button-secondary {
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ccc;
+}
+.dashboard-button-secondary:hover {
+  background-color: #e0e0e0;
+}
+
+/* Status text styling from MyApplicationsPage.css - ensure these are available or defined */
+/* These might already be in DashboardLayout.css or a global CSS file. 
+   If not, define them here or ensure they are imported. */
+.status-pending { font-weight: bold; color: #ffa500; }
+.status-approved { font-weight: bold; color: #4caf50; }
+.status-rejected { font-weight: bold; color: #f44336; }

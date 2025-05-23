@@ -13,9 +13,10 @@ public class ApplicationDTO {
     private String jobTitle;
     private Long applicantId;
     private String applicantName;
+    private String companyName; 
    
 
-    // Constructor for Option 2 (without resumePath)
+   
     public ApplicationDTO(
         Long id, 
         String coverLetter, 
@@ -24,7 +25,8 @@ public class ApplicationDTO {
         Long jobId, 
         String jobTitle, 
         Long applicantId, 
-        String applicantName
+        String applicantName,
+        String companyName // New parameter
     ) {
         this.id = id;
         this.coverLetter = coverLetter;
@@ -34,5 +36,8 @@ public class ApplicationDTO {
         this.jobTitle = jobTitle;
         this.applicantId = applicantId;
         this.applicantName = applicantName;
+        this.companyName = companyName; // Set new field
     }
+
+   
 }

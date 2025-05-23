@@ -1,0 +1,65 @@
+.my-applications-container {
+    padding: 20px;
+}
+/* Remove .application-summary-card styles as they are replaced by the table */
+/* .application-summary-card { ... } */
+/* .application-summary-card h3 { ... } */
+
+.error-message {
+    color: red;
+}
+
+.applications-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Consistent with .card */
+}
+
+.applications-table th,
+.applications-table td {
+    border: 1px solid #e0e0e0; /* Consistent with .card border */
+    padding: 12px 15px; /* Increased padding */
+    text-align: left;
+    vertical-align: middle; /* Align content vertically */
+}
+
+.applications-table th {
+    background-color: #f4f7f6; /* Light header, consistent with page bg */
+    color: #2c3e50; /* Dark heading color */
+    font-weight: bold;
+    font-size: 0.95em; /* Slightly smaller header font */
+    text-transform: uppercase; /* Uppercase headers */
+}
+
+.applications-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Zebra striping for rows */
+}
+
+.applications-table tbody tr:hover {
+    background-color: #f0f0f0; /* Hover effect for rows */
+}
+
+.applications-table td a {
+    color: #3498db; /* Primary color for links */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.applications-table td a:hover {
+    text-decoration: underline;
+}
+
+/* Status styles remain the same */
+.status-pending {
+    font-weight: bold;
+    color: #ffa500; /* Orange */
+}
+.status-approved {
+    font-weight: bold;
+    color: #4caf50; /* Green */
+}
+.status-rejected {
+    font-weight: bold;
+    color: #f44336; /* Red */
+}
