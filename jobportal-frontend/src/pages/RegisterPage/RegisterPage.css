@@ -1,123 +1,88 @@
 .register-page {
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
-  background: linear-gradient(135deg, #2b5876 0%, #4e4376 100%);
-  padding: 2rem;
+  justify-content: center;
+  align-items: center;
+  background: #f7fafc;
 }
 
-.register-container {
-  background: white;
+.register-page form {
+  background: #fff;
+  padding: 2.5rem 2rem;
   border-radius: 12px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 32px 0 rgba(0,0,0,0.09);
+  min-width: 320px;
+  max-width: 390px;
   width: 100%;
-  max-width: 500px;
-  padding: 2rem;
-  margin: 2rem auto;
-}
-
-.form-card {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
 }
 
-.form-header {
-  text-align: center;
+.register-page h2 {
   margin-bottom: 1.5rem;
-}
-
-.form-header h1 {
-  font-size: 1.75rem;
-  color: #1f2937;
-  margin-bottom: 0.5rem;
-}
-
-.form-header p {
-  color: #6b7280;
-  font-size: 0.95rem;
-}
-
-.register-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.form-row {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: 1fr 1fr;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-/* Keep all input/error styles from login page */
-
-.role-selection {
-  display: flex;
-  gap: 1rem;
-  margin: 0.5rem 0;
-}
-
-.role-option {
-  flex: 1;
-}
-
-.role-label {
-  display: block;
-  padding: 0.75rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
   text-align: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  font-weight: 700;
+  color: #22223b;
 }
 
-.role-option input[type="radio"]:checked + .role-label {
-  border-color: #3b82f6;
-  background-color: #f0f4ff;
-}
-
-.checkbox-group {
-  margin: 1rem 0;
-}
-
-.checkbox-label {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-  color: #4b5563;
-  line-height: 1.4;
-}
-
-.link {
-  color: #3b82f6;
-  text-decoration: none;
-}
-
-.btn-submit {
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-  color: white;
-  padding: 0.75rem;
-  border-radius: 8px;
-  font-weight: 600;
+.register-page input[type="text"],
+.register-page input[type="email"],
+.register-page input[type="password"] {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #eaeaea;
+  border-radius: 6px;
   font-size: 1rem;
-  transition: all 0.2s ease;
+  outline: none;
+  transition: border 0.2s;
 }
 
-@media (max-width: 480px) {
-  .form-row {
-    grid-template-columns: 1fr;
-  }
-  
-  .role-selection {
-    flex-direction: column;
-  }
-  
+.register-page input:focus {
+  border-color: #4f8cff;
+}
+
+.user-type-select {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: 1rem 0 1.5rem 0;
+}
+
+.user-type-select label {
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.register-page button[type="submit"] {
+  background: #4f8cff;
+  color: white;
+  padding: 0.8rem 0;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.register-page button[type="submit"]:hover,
+.register-page button[type="submit"]:focus {
+  background: #346dd8;
+}
+
+.error {
+  margin-top: 1rem;
+  color: #d90429;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.success {
+  margin-top: 1rem;
+  color: #38b000;
+  text-align: center;
+  font-size: 1rem;
 }

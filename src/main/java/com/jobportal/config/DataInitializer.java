@@ -1,26 +1,26 @@
 package com.jobportal.config;
 
 import com.jobportal.model.Role;
-import com.jobportal.model.Role.RoleName;
 import com.jobportal.repository.RoleRepository;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-@Configuration
-public class DataInitializer {
+@Component
+public class DataInitializer implements CommandLineRunner {
 
-    @Bean
-    public CommandLineRunner initializeRoles(RoleRepository roleRepository) {
-        return args -> {
-            // Check and create roles if they don't exist
-            for (RoleName roleName : RoleName.values()) {
-                if (!roleRepository.existsByName(roleName)) {
-                    Role role = new Role();
-                    role.setName(roleName);
-                    roleRepository.save(role);
-                }
-            }
-        };
+    private final RoleRepository roleRepository;
+
+    public DataInitializer(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
+
+    @Override
+    public void run(String... args) {
+        if (roleRepository.findByName("EMPLOYER").isEmpty()) {
+            roleRepository.save(new Role("EMPLOYER"));
+        }
+        if (roleRepository.findByName("JOB_SEEKER").isEmpty()) {
+            roleRepository.save(new Role("JOB_SEEKER"));
+        }
     }
 }

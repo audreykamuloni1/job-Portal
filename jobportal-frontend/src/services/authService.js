@@ -1,31 +1,40 @@
 import axios from 'axios';
 
 const API_URL = 'http://localhost:8091/api/auth/';
-export const login = async (credentials) => {
+
 const login = async (userData) => {
-  const response = await axios.post(`${API_URL}login`, userData);
-  if (response.data.token) {
-    localStorage.setItem('user', JSON.stringify(response.data));
-  }
-  return response.data;
-};
+  const response = await axios.post(
+    `${API_URL}login`,
+    userData,
+    { headers: { 'Content-Type': 'application/json' } }
+  );
+  // Map backend response to what your app expects
+  return {
+    token: response.data.token, // backend provides 'token'
+    user: {
+      username: response.data.username,
+      roles: response.data.roles,
+      type: response.data.type, // if you want to keep 'Bearer'
+    }
+  };
 };
 
-export const register = async (credentials) => {
 const register = async (userData) => {
-  const response = await axios.post(`${API_URL}register`, userData);
+  const response = await axios.post(`${API_URL}register`, userData, {
+    headers: { 'Content-Type': 'application/json' }
+  });
   return response.data;
-};
 };
 
 const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem('user'));
+  const userData = localStorage.getItem('userData');
+  return userData ? JSON.parse(userData) : null;
 };
 
 const authService = {
   login,
   register,
-  getCurrentUser
+  getCurrentUser,
 };
 
 export default authService;

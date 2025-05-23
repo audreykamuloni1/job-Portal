@@ -5,13 +5,16 @@ public class ErrorResponse {
     private String message;
     private long timestamp;
 
+    public ErrorResponse() {}
+
     public ErrorResponse(int status, String message, long timestamp) {
         this.status = status;
         this.message = message;
         this.timestamp = timestamp;
     }
 
-    // Getters and setters
+    // Getters and Setters
+
     public int getStatus() {
         return status;
     }

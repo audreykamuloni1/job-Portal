@@ -9,7 +9,6 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     const userData = localStorage.getItem('userData');
-    
     if (token && userData) {
       try {
         setUser(JSON.parse(userData));
@@ -22,6 +21,7 @@ export function AuthProvider({ children }) {
     setLoading(false);
   }, []);
 
+  // userData should have at least: username, roles, type (optional)
   const login = (userData, token) => {
     localStorage.setItem('authToken', token);
     localStorage.setItem('userData', JSON.stringify(userData));

@@ -1,14 +1,30 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Navbar from './components/navbar/Navbar';
 import HomePage from './pages/HomePage/HomePage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
-import DashboardPage from './pages/DashboardPage/DashboardPage';
 import JobListPage from './pages/JobListPage/JobListPage';
-import ProtectedRoute from './components/ProtectedRoute';
+// Use these imports for dashboards and redirector:
+import JobSeekerDashboard from './pages/Dashboard/JobSeekerDashboard';
+import EmployerDashboard from './pages/Dashboard/EmployerDashboard';
+import DashboardRedirect from './pages/Dashboard/DashboardRedirect';
+import RoleProtectedRoute from './components/RoleProtectedRoute';
 import './App.css';
+
+// ProtectedRoute for general authentication
+const ProtectedRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+};
 
 function App() {
   return (
@@ -21,18 +37,37 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
-              <Route
-                path="/jobs"
-                element={<JobListPage />}
-              />
+              <Route path="/jobs" element={<JobListPage />} />
+
+              {/* Central dashboard route: redirects based on role */}
               <Route
                 path="/dashboard"
                 element={
                   <ProtectedRoute>
-                    <DashboardPage />
+                    <DashboardRedirect />
                   </ProtectedRoute>
                 }
               />
+              {/* Job Seeker Dashboard (only for job seekers) */}
+              <Route
+                path="/dashboard/job-seeker"
+                element={
+                  <RoleProtectedRoute allowedRoles={['ROLE_JOB_SEEKER']}>
+                    <JobSeekerDashboard />
+                  </RoleProtectedRoute>
+                }
+              />
+              {/* Employer Dashboard (only for employers) */}
+              <Route
+                path="/dashboard/employer"
+                element={
+                  <RoleProtectedRoute allowedRoles={['ROLE_EMPLOYER']}>
+                    <EmployerDashboard />
+                  </RoleProtectedRoute>
+                }
+              />
+
+              {/* Catch-all route */}
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </main>
