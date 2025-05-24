@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "applications")
-@Getter // Lombok will generate getters for all fields
-@Setter // Lombok will generate setters for all fields
-@NoArgsConstructor // Lombok will generate a no-argument constructor
+@Getter 
+@Setter 
+@NoArgsConstructor 
 public class Application {
 
     @Id

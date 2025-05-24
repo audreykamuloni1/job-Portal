@@ -15,9 +15,7 @@ public class JobMapper {
         this.userRepository = userRepository;
     }
 
-    /**
-     * Convert JobDTO to Job entity
-     */
+    
     public Job toEntity(JobDTO dto) {
         Job job = new Job();
         job.setId(dto.getId());
@@ -36,9 +34,7 @@ public class JobMapper {
         return job;
     }
 
-    /**
-     * Convert Job entity to JobDTO
-     */
+   
     public JobDTO toDTO(Job job) {
         JobDTO dto = new JobDTO();
         dto.setId(job.getId());
@@ -55,13 +51,13 @@ public class JobMapper {
         
         if (job.getEmployer() != null) {
             dto.setEmployerId(job.getEmployer().getId());
-            // Attempt to get company name from employer's profile
+           
             if (job.getEmployer().getEmployerProfile() != null && 
                 job.getEmployer().getEmployerProfile().getCompanyName() != null &&
                 !job.getEmployer().getEmployerProfile().getCompanyName().isEmpty()) {
                 dto.setEmployerName(job.getEmployer().getEmployerProfile().getCompanyName());
             } else {
-                // Fallback to username if company name is not available or profile doesn't exist
+              
                 dto.setEmployerName(job.getEmployer().getUsername()); 
             }
         }

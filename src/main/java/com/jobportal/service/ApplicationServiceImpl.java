@@ -74,7 +74,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public void updateApplicationStatus(Long applicationId, String status) {
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new RuntimeException("Application not found"));
-        application.setStatus(Application.ApplicationStatus.valueOf(status.toUpperCase())); // Ensure status is uppercase for enum matching
+        application.setStatus(Application.ApplicationStatus.valueOf(status.toUpperCase())); 
         applicationRepository.save(application);
 
         // Send email notification if status is APPROVED
@@ -115,7 +115,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 application.getJob().getTitle(),
                 application.getApplicant().getId(),
                 application.getApplicant().getUsername(),
-                companyName // Add the new companyName here
+                companyName
         );
     }
 
@@ -129,7 +129,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
         List<Long> jobIds = employerJobs.stream().map(Job::getId).collect(Collectors.toList());
 
-        // Find applications for these jobs, order by date descending, limit results
+        
         Pageable pageable = PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "applicationDate"));
         List<Application> recentApplications = applicationRepository.findByJob_IdIn(jobIds, pageable);
 

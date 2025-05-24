@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react'; // Removed useContext
 import { Link } from 'react-router-dom'; // Ensure Link is imported
 import applicationService from '../../../services/applicationService';
-import { AuthContext } from '../../../contexts/AuthContext'; // For context if needed
-import './MyApplicationsPage.css'; // For basic styling
+import { useAuth } from '../../../contexts/AuthContext'; // Corrected import
+import './MyApplicationPage.css'; // Corrected CSS import name
 
 const MyApplicationsPage = () => {
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const { user } = useContext(AuthContext); // Get user from AuthContext
+    const { user } = useAuth(); // Corrected usage
 
     useEffect(() => {
         const fetchApplications = async () => {

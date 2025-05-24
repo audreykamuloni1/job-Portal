@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Link might be removed if not used elsewhere after changes
+import { Link, useNavigate } from 'react-router-dom'; 
 import { useAuth } from '../../contexts/AuthContext';
 import jobService from '../../services/jobService';
-import applicationService from '../../services/applicationService'; // Added
-import JobDetailsModal from '../Dashboard/JobSeeker/JobDetailsModal'; // Added with corrected path
+import applicationService from '../../services/applicationService'; 
+import JobDetailsModal from '../Dashboard/JobSeeker/JobDetailsModal'; 
 import './JobListPage.css';
 
 const JobListPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [filteredJobs, setFilteredJobs] = useState([]);
-  const [loading, setLoading] = useState(true); // Shared loading state
+  const [loading, setLoading] = useState(true); 
   const [currentPage, setCurrentPage] = useState(1);
   const [jobsPerPage] = useState(5);
   const [searchTerm, setSearchTerm] = useState('');
@@ -18,7 +18,7 @@ const JobListPage = () => {
   const [typeFilter, setTypeFilter] = useState('');
   const [postError, setPostError] = useState('');
 
-  // New state variables for modal and application
+ 
   const [selectedJob, setSelectedJob] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [applicationCoverLetter, setApplicationCoverLetter] = useState('');
@@ -30,35 +30,33 @@ const JobListPage = () => {
   const totalJobs = filteredJobs.length;
   const hasMoreJobs = currentJobs.length < totalJobs;
 
-  // Handler Functions
+ 
   const handleViewDetails = (job) => {
     setSelectedJob(job);
     setIsModalOpen(true);
-    setApplicationStatus(''); // Clear previous status messages
+    setApplicationStatus(''); 
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedJob(null);
-    setIsApplyFormOpen(false); // Close apply form if open
-    setApplicationCoverLetter(''); // Clear cover letter
+    setIsApplyFormOpen(false); 
+    setApplicationCoverLetter(''); 
   };
 
   const handleOpenApplyForm = () => {
-    // This function is called when "Apply" in JobDetailsModal is clicked
+    
     if (!user) {
       navigate('/login', { state: { from: window.location.pathname, message: 'Please log in to apply for jobs.' } });
       return;
     }
-    if (user.role !== 'JOB_SEEKER') {
+    if (!user?.roles?.includes('ROLE_JOB_SEEKER')) {
         setApplicationStatus('Only Job Seekers can apply for jobs. Please register or log in as a Job Seeker.');
-        // Optionally, close the details modal or keep it open
-        // setIsModalOpen(false); // Example: close details modal
+       
         return; 
     }
     setIsApplyFormOpen(true);
-    // Optional: You could close the details modal here or keep it open in the background
-    // setIsModalOpen(false); 
+  
   };
 
   const handleSubmitApplication = async () => {
@@ -81,7 +79,7 @@ const JobListPage = () => {
         setApplicationStatus('Application submitted successfully!');
         setTimeout(() => {
             handleCloseModal();
-        }, 2000); // Close after 2 seconds
+        }, 2000); 
     } catch (error) {
         console.error('Error submitting application:', error);
         setApplicationStatus(error.response?.data?.message || error.message || 'Failed to submit application.');
@@ -94,7 +92,7 @@ const JobListPage = () => {
     const fetchAndFilterJobs = async () => {
         try {
             setLoading(true);
-            // Construct the search parameters
+           
             const searchParams = {
                 keyword: searchTerm,
                 location: locationFilter,
@@ -102,18 +100,17 @@ const JobListPage = () => {
             };
             const data = await jobService.searchJobs(searchParams);
             setFilteredJobs(data || []);
-            setCurrentPage(1); // Reset to first page on new search
+            setCurrentPage(1); 
         } catch (error) {
             console.error('Error fetching or searching jobs:', error);
-            setFilteredJobs([]); // Set to empty on error
-            // Optionally set an error state to display to the user
+            setFilteredJobs([]); 
         } finally {
             setLoading(false);
         }
     };
 
     fetchAndFilterJobs();
-  }, [searchTerm, locationFilter, typeFilter]); // Re-run when search/filter terms change
+  }, [searchTerm, locationFilter, typeFilter]); 
 
   const handlePostJob = () => {
     setPostError('');
@@ -123,7 +120,7 @@ const JobListPage = () => {
       return;
     }
 
-    if (user?.role === 'employer') {
+    if (user?.roles?.includes('ROLE_EMPLOYER')) {
       navigate('/dashboard/post-job');
     } else {
       setPostError('Job posting requires an employer account.');
@@ -190,7 +187,7 @@ const JobListPage = () => {
             </select>
 
             <button
-              className="btn-text clear-filters" // Updated
+              className="btn-text clear-filters" 
               onClick={() => {
                 setSearchTerm('');
                 setLocationFilter('');
@@ -212,9 +209,9 @@ const JobListPage = () => {
               {postError && (
                 <div className="post-error">
                   <p>{postError}</p>
-                  {user?.role === 'jobSeeker' && (
+                  {user?.roles?.includes('ROLE_JOB_SEEKER') && ( 
                     <button
-                      className="btn-secondary switch-role-btn" // Updated
+                      className="btn-secondary switch-role-btn" 
                       onClick={() => navigate('/register?role=employer')}
                     >
                       Register as Employer
@@ -223,13 +220,13 @@ const JobListPage = () => {
                   {!user && (
                     <>
                       <button
-                        className="btn-secondary login-btn" // Updated
+                        className="btn-secondary login-btn" 
                         onClick={() => navigate('/login')}
                       >
                         Existing Employer
                       </button>
                       <button
-                        className="btn-secondary register-btn" // Updated
+                        className="btn-secondary register-btn" 
                         onClick={() => navigate('/register?role=employer')}
                       >
                         New Employer Account
@@ -240,7 +237,7 @@ const JobListPage = () => {
               )}
 
               <button
-                className="btn-primary post-job-btn" // Updated
+                className="btn-primary post-job-btn" 
                 onClick={handlePostJob}
               >
                 Launch First Job Listing

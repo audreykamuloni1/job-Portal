@@ -26,7 +26,7 @@ public class AdminService {
         Job job = jobRepository.findById(jobId)
                 .orElseThrow(() -> new ResourceNotFoundException("Job not found with id: " + jobId));
         job.setStatus(Job.Status.APPROVED);
-        job.setActive(true); // Ensure the job is active when approved
+        job.setActive(true); 
         jobRepository.save(job);
     }
 
