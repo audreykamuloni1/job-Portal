@@ -1,9 +1,8 @@
 .my-applications-container {
-    padding: 20px;
+    padding: 2rem 0; /* Updated padding */
+    background-color: #f8fafc; /* Ensured global body background */
 }
-/* Remove .application-summary-card styles as they are replaced by the table */
-/* .application-summary-card { ... } */
-/* .application-summary-card h3 { ... } */
+
 
 .error-message {
     color: red;
@@ -26,7 +25,7 @@
 
 .applications-table th {
     background-color: #f4f7f6; /* Light header, consistent with page bg */
-    color: #2c3e50; /* Dark heading color */
+    color: #2c3e50; /* Dark heading color - Kept as is per instruction (optional change) */
     font-weight: bold;
     font-size: 0.95em; /* Slightly smaller header font */
     text-transform: uppercase; /* Uppercase headers */
@@ -41,7 +40,7 @@
 }
 
 .applications-table td a {
-    color: #3498db; /* Primary color for links */
+    color: #3b82f6; /* Updated to primary blue from App.css */
     text-decoration: none;
     font-weight: bold;
 }
@@ -50,7 +49,7 @@
     text-decoration: underline;
 }
 
-/* Status styles remain the same */
+/* Status styles remain the same, as per instruction (optional change) */
 .status-pending {
     font-weight: bold;
     color: #ffa500; /* Orange */

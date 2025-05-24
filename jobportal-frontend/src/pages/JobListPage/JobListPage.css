@@ -29,8 +29,8 @@
 .job-filters {
   background: white;
   padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border-radius: 8px; /* Updated from 12px */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04); /* Updated shadow */
   margin-bottom: 2rem;
 }
 
@@ -43,23 +43,23 @@
 .search-input {
   flex: 1;
   padding: 0.75rem 1rem;
-  border: 2px solid #e2e8f0;
+  border: 1px solid #cbd5e1; /* Updated */
   border-radius: 8px;
   font-size: 1rem;
 }
-
-.search-btn {
-  padding: 0.75rem 1.5rem;
-  background: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
+.search-input:focus {
+  outline: none;
+  border-color: #3b82f6; /* Primary color for focus */
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); /* Updated */
 }
 
-.search-btn:hover {
-  background: #2563eb;
+/* .search-btn styles removed as .btn-primary handles them */
+/* Keep specific padding/border-radius if different from .btn-primary */
+.search-btn { /* Assuming .btn-primary provides base, this is for overrides */
+  padding: 0.75rem; /* Make it more square for an icon */
+  line-height: 1; /* Helps align icon if it's text-based */
+  /* Ensure font-size of icon is appropriate if it's a text character */
+  /* border-radius: 8px; Kept if specific, or let .btn-primary handle */
 }
 
 .filter-controls {
@@ -72,22 +72,20 @@
   flex: 1;
   min-width: 200px;
   padding: 0.75rem;
-  border: 2px solid #e2e8f0;
+  border: 1px solid #cbd5e1; /* Updated */
   border-radius: 8px;
   background: white;
 }
-
-.clear-filters {
-  padding: 0.75rem 1.5rem;
-  background: #f8fafc;
-  border: 2px solid #e2e8f0;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
+.filter-select:focus {
+  outline: none;
+  border-color: #3b82f6; /* Primary color for focus */
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); /* Updated */
 }
 
-.clear-filters:hover {
-  background: #e2e8f0;
+/* .clear-filters styles removed as .btn-text handles them */
+/* Keep specific padding/border-radius if different from .btn-text */
+.clear-filters { /* Assuming .btn-text provides base */
+  padding: 0.75rem 1.5rem; /* Kept if specific */
 }
 
 /* Job Cards */
@@ -98,159 +96,110 @@
 
 .job-card {
   background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0; /* Updated */
+  border-radius: 8px; /* Update from 12px */
+  padding: 1.5rem; /* Kept from original, good */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Kept from original, good */
 }
 
 .card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1rem;
+  /* display: flex; */ /* Already there */
+  /* justify-content: space-between; */ /* Already there */
+  /* align-items: flex-start; */ /* Already there */
+  margin-bottom: 1rem; /* Kept from original */
 }
 
-.job-meta h3 {
-  color: #1a365d;
-  margin-bottom: 0.5rem;
+.job-title { /* Added for specificity, assuming it's a class on h3 */
+  font-size: 1.25rem; /* Updated */
+  color: #1a365d; /* Updated */
+  font-weight: 600; /* Updated */
+  margin-bottom: 0.25rem; /* Adjusted from .job-meta h3 */
 }
 
 .company {
-  color: #4a5568;
-  margin-bottom: 0.75rem;
+  color: #4a5568; /* Kept from original */
+  margin-bottom: 0.5rem; /* Adjusted */
+  font-size: 0.95rem; /* Added */
 }
 
-.job-tags {
+.job-meta { /* This class wraps location and job-type */
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
+  font-size: 0.85rem; /* Updated for meta text */
+  color: #718096; /* Softer color for meta */
 }
+/* .job-meta h3 was too general, targeting .job-title directly now */
 
+/* .job-tags and related styles seem okay if used, otherwise can be pruned if not in current JSX */
 .job-tags span {
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
   background: #f1f5f9;
   color: #4a5568;
-  font-size: 0.9rem;
+  font-size: 0.8rem; /* Slightly smaller */
 }
 
-.save-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1.25rem;
-  padding: 0.5rem;
-}
+/* .save-btn removed if not used, or style with btn-text if it is */
 
 .card-body {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem; /* Kept from original */
 }
 
-.description {
-  color: #4a5568;
-  line-height: 1.6;
-  margin-bottom: 1rem;
+.job-description { /* Assuming this class is on the p tag */
+  color: #4a5568; /* Kept from original */
+  line-height: 1.6; /* Kept from original */
+  margin-bottom: 1rem; /* Kept from original */
+  font-size: 0.9rem; /* Added for consistency */
 }
 
-.requirements {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
+/* .requirements and .requirement seem okay if used, otherwise can be pruned */
 .requirement {
   background: #dbeafe;
   color: #1e3a8a;
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
-  font-size: 0.9rem;
+  font-size: 0.8rem; /* Slightly smaller */
 }
 
 .card-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid #e2e8f0;
-  padding-top: 1rem;
+  border-top: 1px solid #e2e8f0; /* Kept from original */
+  padding-top: 1rem; /* Kept from original */
 }
 
+/* .salary style kept */
 .salary {
   color: #065f46;
   font-weight: 600;
 }
 
-.actions {
-  display: flex;
-  gap: 1rem;
+/* .actions removed if not used */
+
+/* .details-btn styles removed as .btn-secondary handles them */
+.details-btn { /* Assuming .btn-secondary provides base */
+  padding: 0.5rem 1rem; /* Kept if specific */
 }
 
-.details-btn {
-  padding: 0.5rem 1rem;
-  border: 2px solid #3b82f6;
-  border-radius: 8px;
-  color: #3b82f6;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
+/* .apply-btn (if it refers to a button inside job card, not the modal) */
+/* removed as it's not in the provided job card JSX. */
+/* If there was one, it would be .btn-primary */
 
-.details-btn:hover {
-  background: #3b82f6;
-  color: white;
-}
-
-.apply-btn {
-  padding: 0.5rem 1rem;
-  background: #10b981;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.apply-btn:hover {
-  background: #059669;
-}
-
-/* Empty State */
-.empty-state {
-  text-align: center;
-  padding: 4rem 2rem;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-}
-
-.empty-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-}
-
-.empty-state h3 {
-  color: #1a365d;
-  margin-bottom: 0.5rem;
-}
-
-.empty-state p {
-  color: #4a5568;
-  margin-bottom: 1.5rem;
-}
-
-.post-job-btn {
+/* Empty State Button Styling */
+/* .post-job-btn, .switch-role-btn, .login-btn, .register-btn */
+/* Styles removed as .btn-primary or .btn-secondary handle them */
+.post-job-btn { /* Example if specific padding needed */
   padding: 0.75rem 1.5rem;
-  background: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
 }
-
-.post-job-btn:hover {
-  background: #2563eb;
+.switch-role-btn, .login-btn, .register-btn { /* Example if specific padding needed */
+   padding: 0.5rem 1rem;
+   margin: 0.5rem; /* Kept from original */
 }
 
 
+/* General Loading State & Spinner - Kept as is, looks good */
 .loading-state {
   text-align: center;
   padding: 4rem 2rem;
@@ -264,6 +213,10 @@
   border-radius: 50%;
   margin: 0 auto 1rem;
   animation: spin 1s linear infinite;
+}
+/* .load-more-btn styles removed as .btn-primary handles them */
+.load-more-btn { /* Example if specific padding needed */
+  padding: 0.75rem 1.5rem; /* Example, adjust if .btn-primary default is fine */
 }
 
 @keyframes spin {
@@ -281,7 +234,7 @@
   }
   
   .filter-select {
-    width: 100%;
+    width: 100%; /* Kept, good for mobile */
   }
  
 .post-error {
@@ -294,40 +247,8 @@
 }
 
 .post-error p {
-  color: #dc2626;
-  margin-bottom: 0.5rem;
-}
-
-.switch-role-btn,
-.login-btn {
-  background: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 0.5rem 1rem;
-  margin: 0.5rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.switch-role-btn:hover,
-.login-btn:hover {
-  background: #2563eb;
-}
-
-.post-job-btn {
-  background: #10b981;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 0.75rem 1.5rem;
-  margin-top: 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.post-job-btn:hover {
-  background: #059669;
+  color: #dc2626; /* Kept */
+  margin-bottom: 0.5rem; /* Kept */
 }
 
 

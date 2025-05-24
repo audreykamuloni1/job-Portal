@@ -1,22 +1,25 @@
-.modal-backdrop {
+.modal-overlay { /* Renamed from .modal-backdrop */
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0, 0, 0, 0.5); /* Slightly darker backdrop */
   z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 1rem; /* For smaller screens */
+  overflow-y: auto; /* Allow scroll if content is too tall */
 }
 
-.modal-content {
+.modal-content { /* Applied to both JobDetailsModal and Apply Form modal */
   background: #fff;
-  border-radius: 10px;
-  padding: 2rem 2.5rem;
-  min-width: 350px;
-  max-width: 500px;
-  box-shadow: 0 2px 32px rgba(0,0,0,0.18);
-  position: relative;
-  animation: fadeIn 0.2s;
+  border-radius: 8px; /* Updated to match global */
+  padding: 2rem; /* Standardized padding */
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* Standardized shadow */
+  max-width: 500px; /* Kept */
+  width: 100%; /* Responsive width */
+  position: relative; /* Kept for potential absolute children like close button */
+  animation: fadeIn 0.2s; /* Kept */
+  margin: auto; /* Ensures it's centered if overlay padding is used */
 }
 
 @keyframes fadeIn {
@@ -24,26 +27,63 @@
   to { opacity: 1; transform: scale(1);}
 }
 
+/* .modal-close is fine, ensure it's used by JobDetailsModal.js if needed */
 .modal-close {
   position: absolute;
-  right: 1.2rem;
-  top: 1.2rem;
-  background: none;
-  border: none;
-  font-size: 2rem;
-  color: #4f8cff;
-  cursor: pointer;
+  right: 1.2rem; /* Kept */
+  top: 1.2rem; /* Kept */
+  background: none; /* Kept */
+  border: none; /* Kept */
+  font-size: 1.5rem; /* Adjusted for a cleaner look */
+  color: #6b7280; /* Gray, can be styled with btn-text utility if preferred */
+  cursor: pointer; /* Kept */
+}
+.modal-close:hover {
+  color: #374151; /* Darker gray on hover */
 }
 
-.apply-btn {
-  margin-top: 1.5rem;
-  background: #4f8cff;
-  color: #fff;
-  border: none;
-  padding: 0.7rem 1.5rem;
-  border-radius: 5px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: not-allowed;
-  opacity: 0.7;
+/* Removed .apply-btn as it will be handled by .btn-primary in JobDetailsModal.js */
+
+/* Styles for the application form elements within JobListPage.js,
+   but styled here as they share the .modal-content container */
+.application-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  margin-bottom: 1rem; /* Space before status or buttons */
+  font-family: inherit; /* Ensure consistent font */
+  font-size: 1rem; /* Ensure consistent font size */
+  resize: vertical; /* Allow vertical resize */
+}
+.application-textarea:focus {
+  outline: none;
+  border-color: #3b82f6; /* Primary color for focus */
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.application-status {
+  margin-bottom: 1rem; /* Space before buttons */
+  font-size: 0.9rem;
+  /* color is dynamic based on success/error - handled in JS or specific classes */
+  padding: 0.5rem;
+  border-radius: 4px;
+  text-align: center;
+}
+/* Example: Add specific classes for success/error messages if needed */
+.application-status.success {
+  background-color: #d1fae5; /* Green tint */
+  color: #065f46; /* Dark green text */
+}
+.application-status.error {
+  background-color: #fee2e2; /* Red tint */
+  color: #991b1b; /* Dark red text */
+}
+
+
+.application-form-actions {
+  display: flex;
+  justify-content: flex-end; /* Align buttons to the right */
+  gap: 0.75rem; /* Space between buttons */
+  margin-top: 1rem; /* Space above buttons */
 }

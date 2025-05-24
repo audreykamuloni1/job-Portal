@@ -12,7 +12,7 @@ body { /* Or a specific dashboard wrapper if body is too global */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   line-height: 1.6;
   color: #333;
-  background-color: #f4f7f6; /* Light background for the page */
+  background-color: #f8fafc; /* Updated background color */
 }
 
 .dashboard-container {
@@ -52,7 +52,7 @@ body { /* Or a specific dashboard wrapper if body is too global */
 
 .dashboard-nav ul li a:hover,
 .dashboard-nav ul li a.active { /* For active link styling */
-  background-color: #3498db; /* Primary color for hover/active */
+  background-color: #3b82f6; /* Updated to primary blue */
   color: #fff;
 }
 
@@ -102,10 +102,25 @@ body { /* Or a specific dashboard wrapper if body is too global */
 .dashboard-content form select,
 .dashboard-content form textarea {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1em;
+  padding: 0.75rem 1rem; /* Match JobSeekerProfilePage.css */
+  border: 1px solid #cbd5e1; /* Match JobSeekerProfilePage.css */
+  border-radius: 8px;    /* Match JobSeekerProfilePage.css */
+  font-size: 1rem;        /* Match JobSeekerProfilePage.css */
+  line-height: 1.5;       /* Add for consistency */
+  color: #1f2937;         /* Add for consistency */
+  box-sizing: border-box;
+}
+
+.dashboard-content form input[type="text"]:focus,
+.dashboard-content form input[type="email"]:focus,
+.dashboard-content form input[type="password"]:focus,
+.dashboard-content form input[type="url"]:focus,
+.dashboard-content form input[type="date"]:focus,
+.dashboard-content form select:focus,
+.dashboard-content form textarea:focus {
+    border-color: #3b82f6; /* Primary blue */
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); /* Focus ring */
+    outline: none;
 }
 
 .dashboard-content form textarea {
@@ -113,27 +128,7 @@ body { /* Or a specific dashboard wrapper if body is too global */
   resize: vertical;
 }
 
-.dashboard-content form button[type="submit"] {
-  background-color: #3498db; /* Primary color */
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1em;
-  transition: background-color 0.2s ease-in-out;
-}
 
-.dashboard-content form button[type="submit"]:hover {
-  background-color: #2980b9; /* Darker primary */
-}
-
-.dashboard-content form button[type="submit"]:disabled {
-  background-color: #bdc3c7;
-  cursor: not-allowed;
-}
-
-/* Basic Card Styling */
 .card {
   background-color: #fff;
   border: 1px solid #e0e0e0;
@@ -147,17 +142,20 @@ body { /* Or a specific dashboard wrapper if body is too global */
 }
 
 /* Error and Success Messages */
-.error-message {
-  color: #e74c3c;
-  background-color: #fdd;
-  padding: 10px;
-  border-radius: 4px;
-  margin-bottom: 15px;
+.error-message { /* Standardized error message */
+    color: #c53030; /* Darker Red */
+    background-color: #fef2f2; /* Light Red background */
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem; /* Consistent margin */
+    border: 1px solid #fecaca; /* Red border */
 }
-.success-message {
-  color: #2ecc71;
-  background-color: #dfd;
-  padding: 10px;
-  border-radius: 4px;
-  margin-bottom: 15px;
+
+.success-message { /* Standardized success message */
+    color: #2f855a; /* Darker Green */
+    background-color: #f0fdf4; /* Light Green background */
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem; /* Consistent margin */
+    border: 1px solid #9ae6b4; /* Green border */
 }

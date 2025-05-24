@@ -1,0 +1,98 @@
+/* Styles for JobSeekerProfilePage */
+
+.profile-page-container {
+    padding: 2rem 0;
+    background-color: #f8fafc; /* Global body background */
+    flex-grow: 1; /* If part of a flex layout for dashboard */
+}
+
+.profile-form {
+    background-color: #ffffff; /* White background for forms */
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+}
+
+.profile-form div { /* Style for divs wrapping label-input pairs */
+    margin-bottom: 1.25rem;
+}
+
+.profile-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #374151; /* Dark gray */
+}
+
+.profile-form input[type="text"],
+.profile-form textarea {
+    width: 100%;
+    padding: 0.75rem 1rem; /* Adjusted padding */
+    border: 1px solid #cbd5e1; /* Light gray border */
+    border-radius: 8px;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #1f2937;
+    box-sizing: border-box; /* Ensure padding doesn't expand width */
+}
+
+.profile-form input[type="text"]:focus,
+.profile-form textarea:focus {
+    border-color: #3b82f6; /* Primary blue */
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); /* Focus ring */
+    outline: none;
+}
+
+.profile-form input[type="file"] {
+    display: block;
+    margin-top: 0.5rem;
+    /* Basic styling, advanced styling is complex */
+    padding: 0.5rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+}
+
+.message-error {
+    color: #c53030; /* Darker Red */
+    background-color: #fef2f2; /* Light Red background */
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #fecaca; /* Red border */
+}
+
+.message-success {
+    color: #2f855a; /* Darker Green */
+    background-color: #f0fdf4; /* Light Green background */
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #9ae6b4; /* Green border */
+}
+
+.profile-form h3 { /* Assuming h3 is used for section titles within the form */
+    font-size: 1.25rem; /* Adjusted from 1.5rem to fit form context */
+    color: #1f2937;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #e5e7eb;
+    margin: 2.5rem 0; /* More margin */
+}
+
+.current-resume-info {
+    font-size: 0.9rem;
+    color: #4a5568;
+    margin-bottom: 0.75rem;
+    background-color: #f3f4f6; /* Light gray background */
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    display: inline-block; /* So it doesn't take full width */
+}

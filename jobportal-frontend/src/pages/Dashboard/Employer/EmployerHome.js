@@ -70,7 +70,7 @@ const EmployerHome = () => {
                                     <strong>{app.applicantUsername}</strong> applied for <strong>{app.jobTitle}</strong>
                                 </Link>
                                 <p>Applied on: {new Date(app.applicationDate).toLocaleDateString()}</p>
-                                {app.status && <p>Status: <span className={`status-${app.status.toLowerCase()}`}>{app.status}</span></p>}
+                                {app.status && <p>Status: <span className={`status-text status-${app.status.toLowerCase()}`}>{app.status}</span></p>}
                             </li>
                         ))}
                     </ul>

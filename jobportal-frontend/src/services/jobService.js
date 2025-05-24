@@ -16,6 +16,24 @@ const jobService = {
     return response.data;
   },
 
+  searchJobs: async ({ keyword, location, jobType }) => {
+    const params = new URLSearchParams();
+    if (keyword) params.append('keyword', keyword);
+    if (location) params.append('location', location);
+    if (jobType) params.append('jobType', jobType);
+    
+    const queryString = params.toString();
+    
+    try {
+      // api.get will prepend /api, so /jobs/search becomes /api/jobs/search
+      const response = await api.get(`/jobs/search${queryString ? '?' + queryString : ''}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error searching jobs:', error.response || error.message);
+      throw error.response?.data || { message: error.message };
+    }
+  },
+
   getEmployerJobs: async () => {
     try {
       const response = await api.get('/jobs/employer/my-jobs');

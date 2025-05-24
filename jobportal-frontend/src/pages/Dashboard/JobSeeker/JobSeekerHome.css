@@ -62,41 +62,4 @@
   color: #777;
 }
 
-/* General dashboard button styles (can be moved to DashboardLayout.css if widely used) */
-.dashboard-button, .dashboard-button-secondary {
-  display: inline-block;
-  padding: 8px 15px;
-  border-radius: 4px;
-  text-decoration: none;
-  font-size: 0.9em;
-  margin-top: 10px;
-  margin-right: 10px;
-  transition: background-color 0.2s;
-  cursor: pointer;
-  text-align: center;
-}
 
-.dashboard-button {
-  background-color: #3498db; /* Primary color from DashboardLayout.css */
-  color: white;
-  border: 1px solid #3498db;
-}
-.dashboard-button:hover {
-  background-color: #2980b9;
-}
-
-.dashboard-button-secondary {
-  background-color: #f0f0f0;
-  color: #333;
-  border: 1px solid #ccc;
-}
-.dashboard-button-secondary:hover {
-  background-color: #e0e0e0;
-}
-
-/* Status text styling from MyApplicationsPage.css - ensure these are available or defined */
-/* These might already be in DashboardLayout.css or a global CSS file. 
-   If not, define them here or ensure they are imported. */
-.status-pending { font-weight: bold; color: #ffa500; }
-.status-approved { font-weight: bold; color: #4caf50; }
-.status-rejected { font-weight: bold; color: #f44336; }

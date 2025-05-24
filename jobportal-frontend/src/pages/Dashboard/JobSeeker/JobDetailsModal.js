@@ -10,8 +10,10 @@ const JobDetailsModal = ({ job, onClose, onApply }) => (
       <p><b>Type:</b> {job.jobType}</p>
       <p><b>Salary:</b> {job.salary || 'N/A'}</p>
       <p><b>Deadline:</b> {job.applicationDeadline ? new Date(job.applicationDeadline).toLocaleDateString() : 'N/A'}</p>
-      {onApply && <button onClick={onApply}>Apply</button>}
-      <button onClick={onClose}>Close</button>
+      <div className="modal-actions"> {/* Added wrapper for actions */}
+        {onApply && <button onClick={onApply} className="btn-primary">Apply</button>}
+        <button onClick={onClose} className="btn-text">Close</button>
+      </div>
     </div>
   </div>
 );

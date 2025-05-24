@@ -9,7 +9,7 @@ import JobListPage from './pages/JobListPage/JobListPage';
 
 import JobSeekerDashboardLayout from './pages/Dashboard/JobSeeker/JobSeekerDashboardLayout';
 import JobSeekerProfilePage from './pages/Dashboard/JobSeeker/JobSeekerProfilePage';
-import MyApplicationsPage from './pages/Dashboard/JobSeeker/MyApplicationsPage';
+import MyApplicationsPage from './pages/Dashboard/JobSeeker/MyApplicationPage';
 import JobSeekerHome from './pages/Dashboard/JobSeeker/JobSeekerHome'; // Import JobSeekerHome
 import EmployerDashboard from './pages/Dashboard/EmployerDashboard';
 import DashboardRedirect from './pages/Dashboard/DashboardRedirect';

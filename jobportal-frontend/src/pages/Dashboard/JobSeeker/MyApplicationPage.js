@@ -37,37 +37,42 @@ const MyApplicationsPage = () => {
 
     return (
         <div className="my-applications-container">
-            <h2>My Submitted Applications</h2>
-            {error && <p className="error-message">{error}</p>}
-            
-            {applications.length === 0 && !loading && (
-                <p>You haven't submitted any applications yet. <Link to="/jobs">Find jobs</Link> to apply for!</p>
-            )}
+            <div className="container"> {/* New wrapper */}
+                <h2>My Submitted Applications</h2>
+                {error && <p className="error-message">{error}</p>}
 
-            {applications.length > 0 && !loading && (
-                <table className="applications-table">
-                    <thead>
-                        <tr>
-                            <th>Job Title</th>
-                            <th>Company</th>
-                            <th>Application Date</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {applications.map(app => (
-                            <tr key={app.id}>
-                                <td>
-                                    <Link to={`/jobs/${app.jobId}`}>{app.jobTitle}</Link>
-                                </td>
-                                <td>{app.companyName || 'N/A'}</td>
-                                <td>{new Date(app.applicationDate).toLocaleDateString()}</td>
-                                <td><span className={`status-${app.status?.toLowerCase()}`}>{app.status}</span></td>
+                {applications.length === 0 && !loading && (
+                    <div className="no-applications-message text-center">
+                        <p>You haven't submitted any applications yet. Start exploring opportunities now!</p>
+                        <Link to="/jobs" className="btn-primary btn-small" style={{ marginTop: '1rem' }}>Find jobs</Link>
+                    </div>
+                )}
+
+                {applications.length > 0 && !loading && (
+                    <table className="applications-table">
+                        <thead>
+                            <tr>
+                                <th>Job Title</th>
+                                <th>Company</th>
+                                <th>Application Date</th>
+                                <th>Status</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            )}
+                        </thead>
+                        <tbody>
+                            {applications.map(app => (
+                                <tr key={app.id}>
+                                    <td>
+                                        <Link to={`/jobs/${app.jobId}`}>{app.jobTitle}</Link>
+                                    </td>
+                                    <td>{app.companyName || 'N/A'}</td>
+                                    <td>{new Date(app.applicationDate).toLocaleDateString()}</td>
+                                    <td><span className={`status-${app.status?.toLowerCase()}`}>{app.status}</span></td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
+            </div>
         </div>
     );
 };

@@ -1,7 +1,7 @@
 package com.jobportal.service;
 
 import com.jobportal.dto.ApplicationDTO;
-import com.jobportal.dto.RecentApplicationDTO; // Added import
+import com.jobportal.dto.RecentApplicationDTO;
 import com.jobportal.model.Application;
 import com.jobportal.model.Job;
 import com.jobportal.model.User;
@@ -9,13 +9,13 @@ import com.jobportal.repository.ApplicationRepository;
 import com.jobportal.repository.JobRepository;
 import com.jobportal.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest; // Added import
-import org.springframework.data.domain.Pageable;   // Added import
-import org.springframework.data.domain.Sort;       // Added import
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional; // Added import for @Transactional
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections; // Added import
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.time.LocalDateTime;
@@ -26,17 +26,17 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ApplicationRepository applicationRepository;
     private final UserRepository userRepository;
     private final JobRepository jobRepository;
-    private final EmailService emailService; // Added EmailService
+    private final EmailService emailService;
 
     @Autowired
     public ApplicationServiceImpl(ApplicationRepository applicationRepository,
                                  UserRepository userRepository,
                                  JobRepository jobRepository,
-                                 EmailService emailService) { // Added EmailService to constructor
+                                 EmailService emailService) {
         this.applicationRepository = applicationRepository;
         this.userRepository = userRepository;
         this.jobRepository = jobRepository;
-        this.emailService = emailService; // Initialize EmailService
+        this.emailService = emailService;
     }
 
     @Override
@@ -58,14 +58,14 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public List<ApplicationDTO> getApplicationsByJobId(Long jobId) {
-        return applicationRepository.findByJobId(jobId).stream()
+        return applicationRepository.findByJob_Id(jobId).stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<ApplicationDTO> getApplicationsByUserId(Long userId) {
-        return applicationRepository.findByApplicantId(userId).stream()
+        return applicationRepository.findByApplicant_Id(userId).stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
@@ -131,8 +131,8 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         // Find applications for these jobs, order by date descending, limit results
         Pageable pageable = PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "applicationDate"));
-        List<Application> recentApplications = applicationRepository.findByJobIdIn(jobIds, pageable);
-        
+        List<Application> recentApplications = applicationRepository.findByJob_IdIn(jobIds, pageable);
+
         return recentApplications.stream()
             .map(app -> new RecentApplicationDTO(
                 app.getId(),

@@ -53,26 +53,4 @@
   color: #555;
 }
 
-/* Ensure status styles are available (e.g., from DashboardLayout.css or copied here) */
-.status-pending { font-weight: bold; color: #ffa500; }
-.status-approved { font-weight: bold; color: #4caf50; }
-.status-rejected { font-weight: bold; color: #f44336; }
 
-/* Ensure dashboard button styles are available */
-.dashboard-button-secondary {
-  display: inline-block;
-  padding: 8px 15px;
-  border-radius: 4px;
-  text-decoration: none;
-  font-size: 0.9em;
-  margin-top: 10px;
-  transition: background-color 0.2s;
-  cursor: pointer;
-  text-align: center;
-  background-color: #f0f0f0;
-  color: #333;
-  border: 1px solid #ccc;
-}
-.dashboard-button-secondary:hover {
-  background-color: #e0e0e0;
-}

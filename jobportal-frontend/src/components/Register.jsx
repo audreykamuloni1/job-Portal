@@ -26,7 +26,7 @@ const Register = () => {
         try {
              // It sends the 'formData' object as the request body.
             const response = await axios.post(
-                'http://localhost:8088/api/auth/register',
+                'http://localhost:8091/api/auth/register',
                 formData
             );
             
@@ -57,6 +57,15 @@ const Register = () => {
                     />
                 </div>
                 
+                <div className="form-group">
+                    <label>Email:</label>
+                    <input
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        required
+                    />
+                </div>
 
                 <div className="form-group">
                     <label>Register as:</label>

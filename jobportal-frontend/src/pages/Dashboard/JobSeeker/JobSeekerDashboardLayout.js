@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import '../../components/layout/DashboardLayout.css'; // Import the common CSS
+import '../../../components/layout/DashboardLayout.css'; // Import the common CSS
 
 const JobSeekerDashboardLayout = () => {
     const location = useLocation();
