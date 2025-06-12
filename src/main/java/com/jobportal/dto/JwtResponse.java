@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 public class JwtResponse {
     private String token;
     private String type = "Bearer";
-    private String username; // Or email
-    private List<String> roles; // Simplified list of role names
+    private String username; 
+    private List<String> roles; 
 
     public JwtResponse(String accessToken, String username, Collection<? extends GrantedAuthority> authorities) {
         this.token = accessToken;
@@ -20,7 +20,7 @@ public class JwtResponse {
                 .collect(Collectors.toList());
     }
 
-    // Getters and Setters
+   
     public String getToken() {
         return token;
     }

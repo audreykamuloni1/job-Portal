@@ -4,12 +4,12 @@ import jakarta.validation.constraints.NotBlank;
 
 public class LoginRequest {
     @NotBlank
-    private String username; // Or email, depending on what you use for login
+    private String username; 
 
     @NotBlank
     private String password;
 
-    // Getters
+    
     public String getUsername() {
         return username;
     }
@@ -18,7 +18,7 @@ public class LoginRequest {
         return password;
     }
 
-    // Setters (optional, but good for consistency or if you build the object manually)
+    
     public void setUsername(String username) {
         this.username = username;
     }

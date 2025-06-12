@@ -10,12 +10,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmployerProfileDTO {
-    private Long userId; // To associate with the User
+    private Long userId; 
     private String companyName;
     private String companyDescription;
     private String companyWebsite;
     private String companyContactPhone;
-    // We might also want to include username or email from the User entity for display purposes
+   
     private String username;
     private String email;
 }

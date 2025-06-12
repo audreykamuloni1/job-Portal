@@ -61,7 +61,7 @@ public class ApplicationController {
     public ResponseEntity<Void> updateApplicationStatus(
             @PathVariable Long applicationId,
             @RequestParam String status) {
-        // Optional ownership check can be added here later
+        
         applicationService.updateApplicationStatus(applicationId, status);
         return ResponseEntity.ok().build();
     }

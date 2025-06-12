@@ -6,9 +6,9 @@ public class RegisterRequest {
     @NotBlank private String username;
     @NotBlank private String email;
     @NotBlank private String password;
-    @NotBlank private String userType; // "JOB_SEEKER" or "EMPLOYER"
+    @NotBlank private String userType; 
 
-    // Getters and Setters
+    
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
     public String getEmail() { return email; }

@@ -26,7 +26,7 @@ public class ApplicationDTO {
         String jobTitle, 
         Long applicantId, 
         String applicantName,
-        String companyName // New parameter
+        String companyName 
     ) {
         this.id = id;
         this.coverLetter = coverLetter;
@@ -36,7 +36,7 @@ public class ApplicationDTO {
         this.jobTitle = jobTitle;
         this.applicantId = applicantId;
         this.applicantName = applicantName;
-        this.companyName = companyName; // Set new field
+        this.companyName = companyName; 
     }
 
    

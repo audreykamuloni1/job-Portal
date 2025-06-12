@@ -56,10 +56,10 @@ public class JobController {
         User employer = userRepository.findByUsername(userDetails.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException("Employer not found with username: " + userDetails.getUsername()));
 
-        // Map DTO to entity and set employer
+        
         Job job = jobMapper.toEntity(jobDTO);
         job.setEmployer(employer);
-        // Ensure DTO reflects the employer ID for the response, if mapper doesn't handle it
+        
         jobDTO.setEmployerId(employer.getId());
 
 

@@ -8,9 +8,9 @@ public class RecentApplicationDTO {
     private String jobTitle;
     private Long jobId;
     private LocalDateTime applicationDate;
-    private String status; // Optional: if you want to show status directly
+    private String status; 
 
-    // Constructors, Getters, Setters
+    
     public RecentApplicationDTO() {}
 
     public RecentApplicationDTO(Long applicationId, String applicantUsername, String jobTitle, Long jobId, LocalDateTime applicationDate, String status) {
@@ -22,7 +22,7 @@ public class RecentApplicationDTO {
         this.status = status;
     }
 
-    // Standard Getters and Setters for all fields
+   
     public Long getApplicationId() { return applicationId; }
     public void setApplicationId(Long applicationId) { this.applicationId = applicationId; }
     public String getApplicantUsername() { return applicantUsername; }

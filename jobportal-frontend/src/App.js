@@ -19,7 +19,7 @@ import EmployerProfilePage from './pages/Dashboard/Employer/EmployerProfilePage'
 import PostJobPage from './pages/Dashboard/Employer/PostJobPage';
 import ManageJobsPage from './pages/Dashboard/Employer/ManageJobsPage';
 import EmployerHome from './pages/Dashboard/Employer/EmployerHome'; // Import EmployerHome
-import './App.css';
+// import './App.css'; // Removed to rely on Tailwind CSS and avoid conflicts
 
 // ProtectedRoute for general authentication
 const ProtectedRoute = ({ children }) => {

@@ -59,6 +59,8 @@ public class SecurityConfig {
                 .requestMatchers(mvcMatcherBuilder.pattern("/swagger-ui.html")).permitAll()
                 .requestMatchers(mvcMatcherBuilder.pattern("/error")).permitAll()
                 .requestMatchers(mvcMatcherBuilder.pattern(org.springframework.http.HttpMethod.GET, "/api/jobs/**")).permitAll()
+            
+                .requestMatchers(mvcMatcherBuilder.pattern("/api/profile/**")).authenticated()
                 .requestMatchers(mvcMatcherBuilder.pattern("/api/resume/**")).authenticated()
                 .requestMatchers(mvcMatcherBuilder.pattern("/api/jobs/**")).authenticated()
                 .requestMatchers(mvcMatcherBuilder.pattern("/api/applications/**")).authenticated()

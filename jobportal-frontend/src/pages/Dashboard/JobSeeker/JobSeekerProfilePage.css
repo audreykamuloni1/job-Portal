@@ -1,20 +1,20 @@
-/* Styles for JobSeekerProfilePage */
+
 
 .profile-page-container {
     padding: 2rem 0;
-    background-color: #f8fafc; /* Global body background */
-    flex-grow: 1; /* If part of a flex layout for dashboard */
+    background-color: #f8fafc; 
+    flex-grow: 1; 
 }
 
 .profile-form {
-    background-color: #ffffff; /* White background for forms */
+    background-color: #ffffff; 
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     margin-bottom: 2rem;
 }
 
-.profile-form div { /* Style for divs wrapping label-input pairs */
+.profile-form div { 
     margin-bottom: 1.25rem;
 }
 
@@ -22,59 +22,59 @@
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
-    color: #374151; /* Dark gray */
+    color: #374151; 
 }
 
 .profile-form input[type="text"],
 .profile-form textarea {
     width: 100%;
-    padding: 0.75rem 1rem; /* Adjusted padding */
-    border: 1px solid #cbd5e1; /* Light gray border */
+    padding: 0.75rem 1rem;
+    border: 1px solid #cbd5e1; 
     border-radius: 8px;
     font-size: 1rem;
     line-height: 1.5;
     color: #1f2937;
-    box-sizing: border-box; /* Ensure padding doesn't expand width */
+    box-sizing: border-box; 
 }
 
 .profile-form input[type="text"]:focus,
 .profile-form textarea:focus {
-    border-color: #3b82f6; /* Primary blue */
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); /* Focus ring */
+    border-color: #3b82f6; 
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); 
     outline: none;
 }
 
 .profile-form input[type="file"] {
     display: block;
     margin-top: 0.5rem;
-    /* Basic styling, advanced styling is complex */
+   
     padding: 0.5rem;
     border: 1px solid #cbd5e1;
     border-radius: 8px;
 }
 
 .message-error {
-    color: #c53030; /* Darker Red */
-    background-color: #fef2f2; /* Light Red background */
+    color: #c53030;
+    background-color: #fef2f2;
     padding: 0.75rem 1rem;
     border-radius: 8px;
     margin-top: 1rem;
     margin-bottom: 1rem;
-    border: 1px solid #fecaca; /* Red border */
+    border: 1px solid #fecaca; 
 }
 
 .message-success {
-    color: #2f855a; /* Darker Green */
-    background-color: #f0fdf4; /* Light Green background */
+    color: #2f855a; 
+    background-color: #f0fdf4; 
     padding: 0.75rem 1rem;
     border-radius: 8px;
     margin-top: 1rem;
     margin-bottom: 1rem;
-    border: 1px solid #9ae6b4; /* Green border */
+    border: 1px solid #9ae6b4; 
 }
 
-.profile-form h3 { /* Assuming h3 is used for section titles within the form */
-    font-size: 1.25rem; /* Adjusted from 1.5rem to fit form context */
+.profile-form h3 { 
+    font-size: 1.25rem; 
     color: #1f2937;
     margin-bottom: 1.5rem;
     padding-bottom: 0.5rem;
@@ -84,15 +84,30 @@
 hr {
     border: 0;
     border-top: 1px solid #e5e7eb;
-    margin: 2.5rem 0; /* More margin */
+    margin: 2.5rem 0; 
 }
 
 .current-resume-info {
     font-size: 0.9rem;
     color: #4a5568;
     margin-bottom: 0.75rem;
-    background-color: #f3f4f6; /* Light gray background */
+    background-color: #f3f4f6; 
     padding: 0.5rem 1rem;
     border-radius: 6px;
-    display: inline-block; /* So it doesn't take full width */
+    display: inline-block; 
+}
+.profile-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 80vh;
+  width: 100%;
+}
+.container {
+  background: #fff;
+  padding: 2rem 2.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 16px #0001;
+  max-width: 600px;
+  width: 100%;
 }
