@@ -1,73 +1,119 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
-import authService from '../../services/authService';
-import './LoginPage.css';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import Container from '@mui/material/Container';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import { useLoading } from '../../contexts/LoadingContext'; // Adjust path as needed
+import { useAuth } from '../../contexts/AuthContext'; // Import useAuth
+import { showErrorToast } from '../../utils/notifications'; // Import showErrorToast
+import { useLocation } from 'react-router-dom';
+
 
 const LoginPage = () => {
-  const [formData, setFormData] = useState({ username: '', password: '' });
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { showLoading, hideLoading } = useLoading();
+  const { login } = useAuth(); // Get login function from AuthContext
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/"; // Get redirect location or default to home
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
-
-    if (!formData.username || !formData.password) {
-      setError('Please fill out both fields');
-      setLoading(false);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (!email || !password) {
+      showErrorToast('Please enter both email and password.');
       return;
     }
-
+    showLoading('Signing in...');
     try {
-      
-      const { token, user } = await authService.login(formData);
-      login(user, token); 
-      navigate('/dashboard');
-    } catch (err) {
-      setError(
-        err?.response?.data?.message ||
-        err?.message ||
-        'Login failed. Please try again.'
-      );
+      await login({ email, password });
+      // On successful login, AuthContext updates isAuthenticated.
+      // ProtectedRoute will handle redirect if user was trying to access a protected page.
+      // Or, navigate to a default page.
+      navigate(from, { replace: true }); // Navigate to where the user was trying to go, or home
+    } catch (error) {
+      console.error('Login failed:', error);
+      showErrorToast(error.response?.data?.message || error.message || 'Login failed. Please check your credentials.');
     } finally {
-      setLoading(false);
+      hideLoading();
     }
   };
 
   return (
-    <div className="login-page">
-      <form onSubmit={handleSubmit}>
-        <h2>Login</h2>
-        <input
-          type="text"
-          name="username" // Make sure this matches what your backend expects!
-          placeholder="Username"
-          value={formData.username}
-          onChange={handleChange}
-          autoComplete="username"
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-          autoComplete="current-password"
-        />
-        <button type="submit" disabled={loading}>
-          {loading ? 'Logging in...' : 'Login'}
-        </button>
-        {error && <div className="error">{error}</div>}
-      </form>
-    </div>
+    <Container component="main" maxWidth="xs">
+      <Paper 
+        elevation={3} 
+        sx={{ 
+          marginTop: 8, 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          padding: 4 
+        }}
+      >
+        <Typography component="h1" variant="h5" gutterBottom>
+          Login
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <FormControlLabel
+            control={<Checkbox value="remember" color="primary" />}
+            label="Remember me"
+            sx={{ mt: 1, mb: 2 }}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Sign In
+          </Button>
+          <Grid container>
+            <Grid item xs>
+              <Link component={RouterLink} to="/forgot-password" variant="body2">
+                Forgot password?
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link component={RouterLink} to="/register" variant="body2">
+                {"Don't have an account? Sign Up"}
+              </Link>
+            </Grid>
+          </Grid>
+        </Box>
+      </Paper>
+    </Container>
   );
 };
 

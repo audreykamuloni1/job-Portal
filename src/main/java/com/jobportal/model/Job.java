@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jobportal.model.JobStatus; 
 
 
 @Entity
@@ -64,7 +65,7 @@ public class Job {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private Status status = Status.PENDING;
+    private JobStatus status = JobStatus.PENDING_APPROVAL; 
 
    
     @ManyToOne(fetch = FetchType.LAZY)
@@ -74,12 +75,7 @@ public class Job {
     @OneToMany(mappedBy = "job", cascade = CascadeType.ALL)
     private Set<Application> applications = new HashSet<>();
 
-    
-    public enum Status {
-        PENDING,   
-        APPROVED,  
-        REJECTED   
-    }
+   
     
    
     public boolean isActive() {

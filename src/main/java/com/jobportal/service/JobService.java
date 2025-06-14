@@ -2,6 +2,7 @@ package com.jobportal.service;
 
 import com.jobportal.exception.ResourceNotFoundException;
 import com.jobportal.model.Job;
+import com.jobportal.model.JobStatus; // Import JobStatus
 import com.jobportal.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,8 @@ public class JobService {
 
     @Transactional
     public Job createJob(Job job) {
-        // Jobs are now approved by default
-        job.setStatus(Job.Status.APPROVED);
+        // Set status to PENDING_APPROVAL for new jobs
+        job.setStatus(JobStatus.PENDING_APPROVAL);
         return jobRepository.save(job);
     }
 
@@ -31,30 +32,38 @@ public class JobService {
     public List<Job> getAllJobs() {
         // Return only active jobs that have been approved
         return jobRepository.findAll().stream()
-                .filter(job -> job.isActive() && job.getStatus() == Job.Status.APPROVED)
+                .filter(job -> job.isActive() && job.getStatus() == JobStatus.APPROVED)
                 .toList();
     }
 
     @Transactional(readOnly = true)
     public Optional<Job> getJobById(Long id) {
+        // This method can be used internally or by admin/employer who might see non-approved jobs
+        // For public view, getJobByIdOrThrow is filtered
         return jobRepository.findById(id);
     }
 
     @Transactional(readOnly = true)
     public Job getJobByIdOrThrow(Long id) {
-        return jobRepository.findById(id)
+        Job job = jobRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Job not found with id: " + id));
+        // For public access, only return if job is APPROVED
+        if (job.getStatus() != JobStatus.APPROVED) {
+            throw new ResourceNotFoundException("Job not found with id: " + id + " or it is not currently available.");
+        }
+        return job;
     }
 
     @Transactional
     public Job updateJob(Job job) {
         // Check if job exists
-        if (!jobRepository.existsById(job.getId())) {
-            throw new ResourceNotFoundException("Job not found with id: " + job.getId());
-        }
+        Job existingJob = jobRepository.findById(job.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Job not found with id: " + job.getId()));
         
-        // Ensure updated jobs are also set to approved status
-        job.setStatus(Job.Status.APPROVED);
+       
+        
+        job.setStatus(existingJob.getStatus()); 
+        
         
         return jobRepository.save(job);
     }
@@ -69,11 +78,13 @@ public class JobService {
 
     @Transactional(readOnly = true)
     public List<Job> searchJobs(String keyword) {
+        // Filtering is now done at the repository level
         return jobRepository.searchJobs(keyword);
     }
 
     @Transactional(readOnly = true)
     public List<Job> searchJobsByKeywordLocationAndType(String keyword, String location, String jobType) {
+        // Filtering is now done at the repository level
         return jobRepository.searchJobsByKeywordLocationAndType(keyword, location, jobType);
     }
 
@@ -90,6 +101,6 @@ public class JobService {
     @Transactional(readOnly = true)
     public long getActiveJobsCountByEmployer(Long employerId) {
         
-        return jobRepository.countByEmployerIdAndIsActiveAndStatus(employerId, true, Job.Status.APPROVED);
+        return jobRepository.countByEmployerIdAndIsActiveAndStatus(employerId, true, JobStatus.APPROVED);
     }
 }

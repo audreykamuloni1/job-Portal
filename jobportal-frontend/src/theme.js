@@ -1,17 +1,21 @@
-// src/theme.js
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#1976d2', // Blue
+      main: '#00796B', // Teal
     },
     secondary: {
-      main: '#f50057', // Pink
+      main: '#9E9E9E', // Neutral Gray
+    },
+    background: {
+      default: '#f4f6f8',
+      paper: '#ffffff',
     },
   },
   typography: {
-    fontFamily: 'Roboto, Arial, sans-serif',
+    fontFamily: 'Roboto, "Helvetica", "Arial", sans-serif',
+    // You can add h1-h6, body1, etc. overrides here if needed later
   },
 });
 

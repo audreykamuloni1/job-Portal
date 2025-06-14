@@ -1,44 +1,39 @@
-import React, { useEffect, useState } from 'react';
-import { Route, Navigate } from 'react-router-dom';
+import React from 'react';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext'; 
+import { useLoading } from '../contexts/LoadingContext'; 
 
-const PrivateRoute = ({ element: Element, ...rest }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(true); // Track authentication status
+const ProtectedRoute = ({ children }) => {
+  const { isAuthenticated, loading: authLoading } = useAuth();
+  const { isLoading: isGlobalLoading, showLoading, hideLoading } = useLoading(); 
+  const location = useLocation();
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      setIsAuthenticated(false);
-      return;
+  
+  React.useEffect(() => {
+    if (authLoading) {
+      showLoading('Authenticating...');
+    } else {
+      hideLoading();
     }
-
-    // You could optionally make an API call to verify the token's validity
-    // Example: check if token is valid by making a backend request
-    const verifyToken = async () => {
-      try {
-        const response = await fetch('http://localhost:8091/api/auth/verify', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-
-        if (!response.ok) {
-          throw new Error('Token expired or invalid');
-        }
-      } catch (error) {
-        setIsAuthenticated(false);
-      }
+    
+    return () => {
+      if (authLoading) hideLoading();
     };
+  }, [authLoading, showLoading, hideLoading]);
 
-    verifyToken();
-  }, []);
 
-  // If not authenticated, redirect to login
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+  if (authLoading || isGlobalLoading) {
+  
+    
+    return null; 
   }
 
-  // If authenticated, proceed with route
-  return <Route {...rest} element={Element} />;
+  if (!isAuthenticated) {
+   
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  return children ? children : <Outlet />; 
 };
 
-export default PrivateRoute;
+export default ProtectedRoute;

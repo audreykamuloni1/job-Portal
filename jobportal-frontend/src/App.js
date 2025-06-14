@@ -1,7 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
-import Navbar from './components/navbar/Navbar';
+import { Box, Container } from '@mui/material'; // MUI imports
+import Navbar from './components/layout/Navbar'; // New Navbar
+import Footer from './components/layout/Footer'; // New Footer
 import HomePage from './pages/HomePage/HomePage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
@@ -38,12 +40,13 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <div className="App">
+        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
           <Navbar />
-          <main className="main-content">
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/login" element={<LoginPage />} />
+          <Box component="main" sx={{ flexGrow: 1, py: 3 }}> {/* py for padding top/bottom */}
+            <Container maxWidth="lg"> {/* Or your preferred max width, e.g., false for full width */}
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/jobs" element={<JobListPage />} />
 
@@ -89,8 +92,10 @@ function App() {
               {/* Catch-all route */}
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
-          </main>
-        </div>
+            </Container>
+          </Box>
+          <Footer />
+        </Box>
       </AuthProvider>
     </Router>
   );

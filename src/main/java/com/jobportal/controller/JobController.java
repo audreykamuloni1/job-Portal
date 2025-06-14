@@ -70,14 +70,24 @@ public class JobController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('ROLE_EMPLOYER')")
-    public ResponseEntity<JobDTO> updateJob(@PathVariable Long id, @Valid @RequestBody JobDTO jobDTO) {
-        Job existingJob = jobService.getJobByIdOrThrow(id);
+    public ResponseEntity<JobDTO> updateJob(@PathVariable Long id, @Valid @RequestBody JobDTO jobDTO, @AuthenticationPrincipal UserDetails userDetails) {
+        // Fetch the job using the unfiltered getJobById to allow updates on PENDING/REJECTED jobs
+        Job existingJob = jobService.getJobById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Job not found with id: " + id));
 
+        // Verify ownership
+        User employer = userRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new ResourceNotFoundException("Employer not found with username: " + userDetails.getUsername()));
+        if (!existingJob.getEmployer().getId().equals(employer.getId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // Or throw NotAuthorizedException
+        }
         
-
-        jobDTO.setId(id);
+        // Preserve original creation date and employer, status is handled by service layer (preserves current status)
+        jobDTO.setId(id); // Ensure DTO has the correct ID for mapping
         Job jobToUpdate = jobMapper.toEntity(jobDTO);
         jobToUpdate.setEmployer(existingJob.getEmployer()); 
+        jobToUpdate.setPostedDate(existingJob.getPostedDate()); // Keep original posted date
+        // The status will be set by jobService.updateJob by fetching the existingJob's status.
 
         Job updatedJob = jobService.updateJob(jobToUpdate);
 

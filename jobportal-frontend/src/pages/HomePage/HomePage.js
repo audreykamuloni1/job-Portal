@@ -1,110 +1,106 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import HeroSection from '../../components/homepage/HeroSection';
-import FeaturesSection from '../../components/homepage/FeaturesSection';
-import FeaturedCompaniesSection from '../../components/homepage/FeaturedCompaniesSection';
-import { MapPinIcon, EnvelopeIcon, PhoneIcon, BuildingLibraryIcon, ShieldCheckIcon, DocumentTextIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
-
-// Styles are now handled by Tailwind CSS, so HomePage.css is no longer needed.
+import React, { useEffect } from 'react';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import { showSuccessToast } from '../../utils/notifications'; // Adjust path as needed
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import SearchIcon from '@mui/icons-material/Search';
+import { Link as RouterLink } from 'react-router-dom';
 
 const HomePage = () => {
-  const quickLinks = [
-    { name: 'About Us', href: '/about', icon: BuildingLibraryIcon },
-    { name: 'Privacy Policy', href: '/privacy', icon: ShieldCheckIcon },
-    { name: 'Terms of Service', href: '/terms', icon: DocumentTextIcon },
-  ];
-
-  const socialLinks = [ // Placeholder social links
-    { name: 'Facebook', href: '#', icon: 'f_logo' }, // Replace with actual SVG or component
-    { name: 'Twitter', href: '#', icon: 't_logo' },
-    { name: 'LinkedIn', href: '#', icon: 'l_logo' },
-  ];
-
+  useEffect(() => {
+    showSuccessToast("Welcome to JobPortal Malawi!");
+  }, []); // Empty dependency array ensures this runs only once on mount
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100 font-sans"> {/* Ensure footer sticks to bottom */}
-      <main className="flex-grow"> {/* All content except footer */}
-        <HeroSection />
-        <FeaturesSection />
-        <FeaturedCompaniesSection />
-      </main>
+    <Container maxWidth="md">
+      <Box 
+        sx={{ 
+          textAlign: 'center', 
+          my: 8, // margin top and bottom
+        }}
+      >
+        <Typography variant="h2" component="h1" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+          Find Your Dream Job in Malawi
+        </Typography>
+        <Typography variant="h6" color="text.secondary" paragraph sx={{ mb: 4 }}>
+          Discover thousands of job opportunities from top companies and kickstart your career today.
+        </Typography>
+        
+        {/* Search Bar - Non-functional for now */}
+        <Box 
+          component="form" 
+          sx={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            mb: 4,
+            width: '100%',
+            maxWidth: '600px', // Limit search bar width
+            margin: '0 auto 32px auto' // Center the search bar
+          }}
+          onSubmit={(e) => e.preventDefault()} // Prevent actual form submission
+        >
+          <TextField
+            variant="outlined"
+            placeholder="Search by job title, keyword, or company..."
+            fullWidth
+            sx={{ mr: 1, '& .MuiOutlinedInput-root': { borderRadius: '25px 0 0 25px' } }}
+            InputProps={{
+              startAdornment: (
+                <SearchIcon sx={{ color: 'action.active', mr: 1 }} />
+              ),
+            }}
+          />
+          <Button 
+            variant="contained" 
+            color="primary" 
+            size="large"
+            sx={{ py: '15px', borderRadius: '0 25px 25px 0', boxShadow: 'none' }}
+            onClick={() => { /* Placeholder for search action */ }}
+          >
+            Search
+          </Button>
+        </Box>
 
-      {/* Footer */}
-      <footer className="bg-slate-800 text-slate-300 py-12 sm:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
-            {/* Contact Us */}
-            <div className="space-y-3">
-              <h4 className="text-lg font-semibold text-white mb-4">Contact Us</h4>
-              <p className="flex items-start">
-                <MapPinIcon className="h-5 w-5 mr-2 mt-1 text-indigo-400 flex-shrink-0" />
-                <span>Lilongwe 3, Malawi</span>
-              </p>
-              <a href="mailto:contact@malawijobs.mw" className="flex items-center hover:text-indigo-300 transition-colors">
-                <EnvelopeIcon className="h-5 w-5 mr-2 text-indigo-400 flex-shrink-0" />
-                <span>contact@malawijobs.mw</span>
-              </a>
-              <a href="tel:+265992005615" className="flex items-center hover:text-indigo-300 transition-colors">
-                <PhoneIcon className="h-5 w-5 mr-2 text-indigo-400 flex-shrink-0" />
-                <span>+265 992 005 615</span>
-              </a>
-            </div>
+        <Button 
+          variant="outlined" 
+          color="primary" 
+          size="large"
+          component={RouterLink}
+          to="/jobs"
+          sx={{ mr: 2, borderColor: 'primary.main', '&:hover': { borderColor: 'primary.dark' } }}
+        >
+          Browse All Jobs
+        </Button>
+        {/* Add more CTAs or info sections if needed */}
+      </Box>
 
-            {/* Quick Links */}
-            <div>
-              <h4 className="text-lg font-semibold text-white mb-4">Quick Links</h4>
-              <ul className="space-y-2">
-                {quickLinks.map((link) => (
-                  <li key={link.name}>
-                    <Link to={link.href} className="flex items-center hover:text-indigo-300 transition-colors group">
-                      <link.icon className="h-5 w-5 mr-2 text-indigo-400 group-hover:text-indigo-300 flex-shrink-0" />
-                      <span>{link.name}</span>
-                      <ArrowRightIcon className="h-4 w-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity text-indigo-400" />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+      {/* Placeholder for Featured Jobs Section */}
+      <Box sx={{ my: 6 }}>
+        <Typography variant="h4" component="h2" gutterBottom align="center" sx={{ fontWeight: 500 }}>
+          Featured Jobs
+        </Typography>
+        <Box sx={{ textAlign: 'center', color: 'text.secondary' }}>
+          {/* This area will later display JobCard components or similar */}
+          <p>Loading featured jobs...</p> 
+          {/* Example: <Grid container spacing={3}> <Grid item xs={12} sm={6} md={4}><JobCard job={...} /></Grid> ... </Grid> */}
+        </Box>
+      </Box>
 
-            {/* Stay Connected / Newsletter (Example) */}
-            <div className="lg:col-span-2"> {/* Spans 2 columns on larger screens */}
-              <h4 className="text-lg font-semibold text-white mb-4">Stay Updated</h4>
-              <p className="mb-3">Subscribe to our newsletter for the latest job postings and career tips.</p>
-              <form className="flex flex-col sm:flex-row gap-2">
-                <input 
-                  type="email" 
-                  placeholder="Enter your email" 
-                  className="flex-grow px-4 py-2.5 rounded-md bg-slate-700 text-slate-200 border border-slate-600 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none placeholder-slate-400"
-                />
-                <button 
-                  type="submit"
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 px-6 rounded-md transition-colors duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-800"
-                >
-                  Subscribe
-                </button>
-              </form>
-              {/* Placeholder for social media icons - requires actual icons/components */}
-              <div className="mt-6">
-                <h5 className="text-md font-semibold text-white mb-2">Follow Us:</h5>
-                <div className="flex space-x-4">
-                  {/* Example: <a href="#" className="text-slate-400 hover:text-indigo-300"><FacebookIcon /></a> */}
-                  <p className="text-sm text-slate-500">(Social media icons coming soon)</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="text-center border-t border-slate-700 pt-8 mt-8">
-            <p className="text-slate-400 text-sm">
-              © {new Date().getFullYear()} Malawi Job Portal. All rights reserved.
-            </p>
-            <p className="text-xs text-slate-500 mt-1">
-              Built with React & Tailwind CSS.
-            </p>
-          </div>
-        </div>
-      </footer>
-    </div>
+      {/* Placeholder for Why Us Section */}
+      <Box sx={{ my: 6, py:4, backgroundColor: 'background.paper', borderRadius: 2, p:3 }}>
+        <Typography variant="h4" component="h2" gutterBottom align="center" sx={{ fontWeight: 500 }}>
+          Why Choose Us?
+        </Typography>
+        <Typography variant="body1" color="text.secondary" align="center" paragraph>
+          We provide a comprehensive platform connecting talented individuals with leading employers in Malawi. 
+          Our user-friendly interface and extensive job listings make your job search efficient and effective.
+        </Typography>
+        {/* Could add more detailed points using Grid and Icons */}
+      </Box>
+    </Container>
   );
 };
 

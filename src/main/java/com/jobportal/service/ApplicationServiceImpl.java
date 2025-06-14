@@ -54,6 +54,22 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.setStatus(Application.ApplicationStatus.PENDING);
 
         applicationRepository.save(application);
+
+        // Send email notification to the employer
+        Job jobAppliedFor = application.getJob();
+        if (jobAppliedFor != null) {
+            User employer = jobAppliedFor.getEmployer();
+            if (employer != null && employer.getEmail() != null && !employer.getEmail().isEmpty()) {
+                String subject = "New Application Received for '" + jobAppliedFor.getTitle() + "'";
+                String text = "Dear " + employer.getUsername() + ",\n\n" +
+                              "A new application has been submitted for your job posting: '" +
+                              jobAppliedFor.getTitle() + "'.\n\n" +
+                              "Applicant Username: " + application.getApplicant().getUsername() + "\n\n" +
+                              "Please log in to your account to review the application.\n\n" +
+                              "Best regards,\nThe Job Portal Team";
+                emailService.sendSimpleEmail(employer.getEmail(), subject, text);
+            }
+        }
     }
 
     @Override

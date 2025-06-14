@@ -2,6 +2,7 @@ package com.jobportal.service;
 
 import com.jobportal.exception.ResourceNotFoundException;
 import com.jobportal.model.Job;
+import com.jobportal.model.JobStatus; // Import JobStatus
 import com.jobportal.model.User;
 import com.jobportal.repository.JobRepository;
 import com.jobportal.repository.UserRepository;
@@ -25,7 +26,7 @@ public class AdminService {
     public void approveJob(Long jobId) {
         Job job = jobRepository.findById(jobId)
                 .orElseThrow(() -> new ResourceNotFoundException("Job not found with id: " + jobId));
-        job.setStatus(Job.Status.APPROVED);
+        job.setStatus(JobStatus.APPROVED); // Use JobStatus
         job.setActive(true); 
         jobRepository.save(job);
     }
@@ -34,12 +35,12 @@ public class AdminService {
     public void rejectJob(Long jobId) {
         Job job = jobRepository.findById(jobId)
                 .orElseThrow(() -> new ResourceNotFoundException("Job not found with id: " + jobId));
-        job.setStatus(Job.Status.REJECTED);
+        job.setStatus(JobStatus.REJECTED); // Use JobStatus
         jobRepository.save(job);
     }
 
     public List<Job> getPendingJobs() {
-        return jobRepository.findByStatus(Job.Status.PENDING);
+        return jobRepository.findByStatus(JobStatus.PENDING_APPROVAL); // Use JobStatus
     }
 
     @Transactional

@@ -21,9 +21,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 import org.springframework.http.HttpHeaders;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StringUtils;
+
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
@@ -33,6 +38,9 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
+
+    @Value("${cors.allowed-origins}")
+    private String corsAllowedOrigins;
 
     @Autowired
     public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter,
@@ -89,7 +97,15 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*"));
+        List<String> allowedOriginsList;
+        if (StringUtils.hasText(corsAllowedOrigins)) {
+            allowedOriginsList = Arrays.stream(corsAllowedOrigins.split(","))
+                                       .map(String::trim)
+                                       .collect(Collectors.toList());
+        } else {
+            allowedOriginsList = Collections.singletonList("http://localhost:3000"); // Default fallback
+        }
+        configuration.setAllowedOrigins(allowedOriginsList);
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setExposedHeaders(List.of(HttpHeaders.CONTENT_DISPOSITION));
