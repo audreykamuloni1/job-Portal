@@ -32,11 +32,13 @@ const RoleProtectedRoute = ({ allowedRoles }) => {
   const hasRequiredRole = allowedRoles?.some(role => userRoles.includes(role));
 
   if (!hasRequiredRole) {
+   
     
     return <Navigate to="/unauthorized" state={{ from: location }} replace />; 
   }
 
   return <Outlet />; 
+  
 };
 
 export default RoleProtectedRoute;

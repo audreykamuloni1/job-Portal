@@ -1,4 +1,7 @@
 /* DashboardLayout.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Basic Reset / Box Sizing */
 *, *::before, *::after {

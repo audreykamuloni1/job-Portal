@@ -16,11 +16,11 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (roleRepository.findByName("EMPLOYER").isEmpty()) {
-            roleRepository.save(new Role("EMPLOYER"));
+        if (roleRepository.findByName("ROLE_EMPLOYER").isEmpty()) {
+            roleRepository.save(new Role("ROLE_EMPLOYER"));
         }
-        if (roleRepository.findByName("JOB_SEEKER").isEmpty()) {
-            roleRepository.save(new Role("JOB_SEEKER"));
+        if (roleRepository.findByName("ROLE_JOB_SEEKER").isEmpty()) {
+            roleRepository.save(new Role("ROLE_JOB_SEEKER"));
         }
         if (roleRepository.findByName("ROLE_ADMIN").isEmpty()) {
             roleRepository.save(new Role("ROLE_ADMIN"));

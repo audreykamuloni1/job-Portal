@@ -20,6 +20,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import Link from '@mui/material/Link';
 import CircularProgress from '@mui/material/CircularProgress'; // For loading state
 
 // Removed static sampleJobDetail
@@ -203,14 +204,15 @@ const JobDetailsPage = () => {
             </Box>
         )}
       </Paper>
-      {job && ( /* Ensure job data is loaded before rendering modal */ }
-        <ApplyJobModal
-            open={isApplyModalOpen}
-            onClose={handleModalClose}
-            jobId={job.id}
-            jobTitle={job.title}
-        />
-      )}
+{job && (
+  // Ensure job data is loaded before rendering modal
+  <ApplyJobModal
+    open={isApplyModalOpen}
+    onClose={handleModalClose}
+    jobId={job.id}
+    jobTitle={job.title}
+  />
+)}
     </Container>
   );
 };

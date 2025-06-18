@@ -28,7 +28,3 @@ export const showWarningToast = (message) => {
   toast.warning(message, toastConfig);
 };
 
-// You can also create a default toast if needed
-// export const showToast = (message, type = 'default') => {
-//   toast(message, { ...toastConfig, type });
-// };

@@ -1,102 +1,88 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
-import { Box, Container } from '@mui/material'; // MUI imports
-import Navbar from './components/layout/Navbar'; // New Navbar
-import Footer from './components/layout/Footer'; // New Footer
-import HomePage from './pages/HomePage/HomePage';
+import MainLayout from './components/layout/MainLayout';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { LoadingProvider } from './contexts/LoadingContext'; // Adjust path as needed
+import GlobalLoadingIndicator from './components/common/GlobalLoadingIndicator'; // Adjust path as needed
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Typography from '@mui/material/Typography'; // For placeholder - can be removed if HomePage/JobsPage don't use it directly
 import LoginPage from './pages/LoginPage/LoginPage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
+import HomePage from './pages/HomePage/HomePage';
 import JobListPage from './pages/JobListPage/JobListPage';
-
-import JobSeekerDashboardLayout from './pages/Dashboard/JobSeeker/JobSeekerDashboardLayout';
+import JobDetailsPage from './pages/JobDetailsPage/JobDetailsPage';
+import JobSeekerDashboard from './pages/Dashboard/JobSeekerDashboard';
 import JobSeekerProfilePage from './pages/Dashboard/JobSeeker/JobSeekerProfilePage';
 import MyApplicationsPage from './pages/Dashboard/JobSeeker/MyApplicationPage';
-import JobSeekerHome from './pages/Dashboard/JobSeeker/JobSeekerHome'; // Import JobSeekerHome
 import EmployerDashboard from './pages/Dashboard/EmployerDashboard';
-import DashboardRedirect from './pages/Dashboard/DashboardRedirect';
-import RoleProtectedRoute from './components/RoleProtectedRoute';
-// Employer Pages
 import EmployerProfilePage from './pages/Dashboard/Employer/EmployerProfilePage';
-import PostJobPage from './pages/Dashboard/Employer/PostJobPage';
-import ManageJobsPage from './pages/Dashboard/Employer/ManageJobsPage';
-import EmployerHome from './pages/Dashboard/Employer/EmployerHome'; // Import EmployerHome
-// import './App.css'; // Removed to rely on Tailwind CSS and avoid conflicts
+import PostJobPage from './pages/Dashboard/Employer/PostJobPage'; 
+import ViewApplicantsPage from './pages/Dashboard/Employer/ViewApplicantsPage'; 
+import AdminDashboard from './pages/Dashboard/Admin/AdminDashboard';
+import UserManagementPage from './pages/Dashboard/Admin/UserManagementPage';
+import JobApprovalPage from './pages/Dashboard/Admin/JobApprovalPage';
+import ProtectedRoute from './components/ProtectedRoute'; // Import ProtectedRoute
+import RoleProtectedRoute from './components/RoleProtectedRoute'; // Import RoleProtectedRoute
+import UnauthorizedPage from './pages/UnauthorizedPage'; // Import UnauthorizedPage
 
-// ProtectedRoute for general authentication
-const ProtectedRoute = ({ children }) => {
-  const { user, loading } = useAuth();
+// LoginPage and RegisterPage are now imported from their respective files
+// HomePage and JobListPage are now imported from their respective files
+// JobDetailsPage is imported
+// Job Seeker Dashboard pages are imported
+// Employer Dashboard pages are imported
+// Admin Dashboard pages are imported
+import ManageJobsPage from './pages/Dashboard/Employer/ManageJobsPage'; // Import actual ManageJobsPage
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-  return children;
-};
+// Placeholder components for Employer routes not yet created
+// const ManageJobsPagePlaceholder = () => <Typography variant="h4" sx={{p:3}}>Employer - Manage Jobs Page (Placeholder)</Typography>; // Replaced
 
 function App() {
   return (
     <Router>
-      <AuthProvider>
-        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-          <Navbar />
-          <Box component="main" sx={{ flexGrow: 1, py: 3 }}> {/* py for padding top/bottom */}
-            <Container maxWidth="lg"> {/* Or your preferred max width, e.g., false for full width */}
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route path="/jobs" element={<JobListPage />} />
+      <LoadingProvider> {/* LoadingProvider wraps everything that might need loading state or trigger loading */}
+        <GlobalLoadingIndicator /> {/* Render the indicator globally */}
+        <MainLayout>
+          <ToastContainer /> {/* ToastContainer added here */}
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/jobs" element={<JobListPage />} />
+          <Route path="/jobs/:jobId" element={<JobDetailsPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
-              {/* Central dashboard route: redirects based on role */}
-              <Route
-                path="/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <DashboardRedirect />
-                  </ProtectedRoute>
-                }
-              />
-              {/* Job Seeker Dashboard (only for job seekers) - Now with nested routes */}
-              <Route
-                path="/dashboard/job-seeker"
-                element={
-                  <RoleProtectedRoute allowedRoles={['ROLE_JOB_SEEKER']}>
-                    <JobSeekerDashboardLayout />
-                  </RoleProtectedRoute>
-                }
-              >
-                <Route index element={<JobSeekerHome />} /> {/* This is the new default */}
-                <Route path="profile" element={<JobSeekerProfilePage />} />
-                <Route path="my-applications" element={<MyApplicationsPage />} />
-                {/* The "Browse Jobs" link in JobSeekerDashboardLayout points to /jobs, which is a top-level route */}
-              </Route>
-              
-              {/* Employer Dashboard (only for employers) - Now with nested routes */}
-              <Route
-                path="/dashboard/employer"
-                element={
-                  <RoleProtectedRoute allowedRoles={['ROLE_EMPLOYER']}>
-                    <EmployerDashboard /> 
-                  </RoleProtectedRoute>
-                }
-              >
-                <Route index element={<EmployerHome />} /> {/* This is the new default */}
-                <Route path="profile" element={<EmployerProfilePage />} />
-                <Route path="post-job" element={<PostJobPage />} />
-                <Route path="manage-jobs" element={<ManageJobsPage />} />
-              </Route>
+          {/* Protected Routes - Require Authentication */}
+          <Route element={<ProtectedRoute />}>
+            {/* Job Seeker Specific Routes */}
+            <Route element={<RoleProtectedRoute allowedRoles={['ROLE_JOB_SEEKER']} />}>
+              <Route path="/dashboard/job-seeker" element={<JobSeekerDashboard />} />
+              <Route path="/profile/job-seeker" element={<JobSeekerProfilePage />} />
+              <Route path="/my-applications" element={<MyApplicationsPage />} />
+            </Route>
 
-              {/* Catch-all route */}
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-            </Container>
-          </Box>
-          <Footer />
-        </Box>
-      </AuthProvider>
+            {/* Employer Specific Routes */}
+            <Route element={<RoleProtectedRoute allowedRoles={['ROLE_EMPLOYER']} />}>
+              <Route path="/dashboard/employer" element={<EmployerDashboard />} />
+              <Route path="/profile/employer" element={<EmployerProfilePage />} />
+              <Route path="/employer/post-job" element={<PostJobPage />} />
+              <Route path="/employer/manage-jobs" element={<ManageJobsPage />} /> {/* Use actual component */}
+              <Route path="/employer/jobs/:jobId/applicants" element={<ViewApplicantsPage />} />
+            </Route>
+
+            {/* Admin Specific Routes */}
+            <Route element={<RoleProtectedRoute allowedRoles={['ROLE_ADMIN']} />}>
+              <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="/admin/user-management" element={<UserManagementPage />} />
+              <Route path="/admin/job-approvals" element={<JobApprovalPage />} />
+            </Route>
+            
+            {/* Routes accessible by any authenticated user if not fitting specific roles above, e.g. a generic /dashboard */}
+            {/* <Route path="/dashboard" element={<GenericDashboard />} /> */}
+          </Route>
+          
+          </Routes>
+        </MainLayout>
+      </LoadingProvider>
     </Router>
   );
 }

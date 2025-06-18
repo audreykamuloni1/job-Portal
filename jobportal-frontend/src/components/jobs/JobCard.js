@@ -8,21 +8,21 @@ import Box from '@mui/material/Box';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import BusinessIcon from '@mui/icons-material/Business';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import { Link as RouterLink } from 'react-router-dom'; 
+import { Link as RouterLink } from 'react-router-dom'; // For navigation
 
 const JobCard = ({ job }) => {
   if (!job) {
     return null; 
   }
 
-  
+  // Destructure with default values to prevent errors if job object is incomplete
   const { 
     id,
     title = "No Title Provided", 
     companyName = "N/A", 
     location = "N/A", 
     description = "No description available.", 
-    postedDate = "N/A" 
+    postedDate = "N/A" // Assuming date is pre-formatted string
   } = job;
 
   const truncateDescription = (text, maxLength) => {
@@ -81,7 +81,7 @@ const JobCard = ({ job }) => {
           variant="contained" 
           color="primary" 
           component={RouterLink} 
-          to={`/jobs/${id || 'na'}`} 
+          to={`/jobs/${id || 'na'}`} // Fallback for ID
         > 
           View Details
         </Button>

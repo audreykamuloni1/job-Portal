@@ -136,33 +136,7 @@ public class FileStorageServiceTest {
     @Test
     void storeFile_WithFilenameContainingInvalidPathSequence_ShouldThrowRuntimeException() throws IOException {
         MultipartFile mockFile = createMockMultipartFile("../secret.pdf", "content");
-        // StringUtils.cleanPath should sanitize this, but the service has an additional check.
-        // The UUID generation should prevent this from being an issue in the storedFileName,
-        // but the originalFileName check is what is being tested by the "contains .."
-        // Let's refine this test to target the specific check in FileStorageService more accurately.
-        // The current check `if(storedFileName.contains(".."))` is on the *stored* filename,
-        // which is generated with UUID and should be safe.
-        // `StringUtils.cleanPath(file.getOriginalFilename())` handles the input filename.
-        // If originalFileName itself is used to construct a path unsafely *before* `resolve`, that's a risk.
-        // The current implementation resolves `storedFileName` against `fileStorageLocation`, which is good.
-        
-        // This test as written might not fail as expected because `StringUtils.cleanPath` cleans `originalFileName`,
-        // and `storedFileName` is UUID-based.
-        // The `if(storedFileName.contains(".."))` in FileStorageService is unlikely to be triggered
-        // with the current `storedFileName` generation logic.
-        // However, if we force a scenario where `cleanPath` might somehow be bypassed or insufficient
-        // for the `storedFileName` (which is not the case here), then it would be relevant.
-        // For now, let's assume `StringUtils.cleanPath` does its job for `originalFileName`.
-        // The internal check for `storedFileName.contains("..")` is more of a defense-in-depth measure
-        // that shouldn't be triggered by typical inputs.
-
-        // Let's test the behavior of cleanPath implicitly:
-        // If the original filename had ".." it would be cleaned.
-        // The service's own check `if(storedFileName.contains(".."))` is on the *generated* name.
-        // This means we can't easily test that specific `RuntimeException` without altering the name generation.
-        // So, we'll trust `StringUtils.cleanPath` and the UUID generation to prevent path traversal.
-        // A successful storage implies these worked.
-        
+    
         MultipartFile mockFileClean = createMockMultipartFile("normal.pdf", "content");
         String storedFileName = fileStorageService.storeFile(mockFileClean, userId);
         assertNotNull(storedFileName); // If it stores, cleanPath and generation worked.

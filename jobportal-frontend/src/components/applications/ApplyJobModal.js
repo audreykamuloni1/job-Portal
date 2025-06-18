@@ -7,9 +7,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-import applicationService from '../../services/applicationService'; 
-import { showSuccessToast, showErrorToast } from '../../utils/notifications'; 
-
+import applicationService from '../../services/applicationService'; // Adjust path as needed
+import { showSuccessToast, showErrorToast } from '../../utils/notifications'; // Adjust path
+// No global loading context here, local loading for modal action
 
 const ApplyJobModal = ({ open, onClose, jobId, jobTitle }) => {
   const [coverLetter, setCoverLetter] = useState('');
@@ -22,24 +22,24 @@ const ApplyJobModal = ({ open, onClose, jobId, jobTitle }) => {
     }
     setIsSubmitting(true);
     try {
-      
+      // Existing service expects applicationDTO: { jobId, coverLetter }
       const response = await applicationService.applyToJob({ jobId, coverLetter });
-     
+      // Existing service returns full response, so access data property
       showSuccessToast(response.data.message || 'Application submitted successfully!');
-      setCoverLetter(''); 
-      onClose(true); 
+      setCoverLetter(''); // Clear field
+      onClose(true); // Pass true to indicate success
     } catch (error) {
-      
+      // Error structure from existing service might be error.response.data.message
       showErrorToast(error.response?.data?.message || error.message || 'Failed to submit application.');
-      onClose(false); 
+      onClose(false); // Pass false to indicate failure
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleClose = () => {
-    if (isSubmitting) return; 
-    setCoverLetter(''); 
+    if (isSubmitting) return; // Prevent closing while submitting
+    setCoverLetter(''); // Reset cover letter on close
     onClose(false);
   };
 

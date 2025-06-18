@@ -69,28 +69,24 @@ const JobListPage = () => {
     } finally {
       hideLoading();
     }
-  }, [showLoading, hideLoading]); // Add itemsPerPage if it's a state
+  }, [showLoading, hideLoading]); 
 
   useEffect(() => {
-    fetchJobs({ page }); // Initial fetch
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]); // Refetch when page changes, if backend supports pagination
+    fetchJobs({ page }); 
+  }, [page]); 
 
   const handleSearch = (event) => {
     event.preventDefault();
-    setPage(1); // Reset to first page on new search
+    setPage(1); 
     fetchJobs({ keyword: keywords, location: location, jobType: jobType, page: 1 });
   };
 
   const handlePageChange = (event, value) => {
     setPage(value);
-    // If pagination is purely frontend after one large fetch:
-    // No need to call fetchJobs here, just update page state for slicing.
-    // If pagination is backend-driven:
-    // fetchJobs({ keyword: keywords, location: location, jobType: jobType, page: value });
+   
   };
   
-  // For purely frontend pagination after one fetch (if backend doesn't paginate)
+
   const itemsPerPageFrontend = 9;
   const currentDisplayedJobs = jobs.slice((page - 1) * itemsPerPageFrontend, page * itemsPerPageFrontend);
 

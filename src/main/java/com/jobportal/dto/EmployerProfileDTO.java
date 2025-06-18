@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-// Consider adding import org.hibernate.validator.constraints.URL; if Hibernate Validator is used and a strict URL validation is needed.
+
 
 @Getter
 @Setter
