@@ -17,7 +17,7 @@ import { useLocation } from 'react-router-dom';
 
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { showLoading, hideLoading } = useLoading();
   const { login } = useAuth(); // Get login function from AuthContext
@@ -27,13 +27,13 @@ const LoginPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!email || !password) {
-      showErrorToast('Please enter both email and password.');
+    if (!username || !password) {
+      showErrorToast('Please enter both username and password.');
       return;
     }
     showLoading('Signing in...');
     try {
-      await login({ email, password });
+      await login({ username, password });
       // On successful login, AuthContext updates isAuthenticated.
       // ProtectedRoute will handle redirect if user was trying to access a protected page.
       // Or, navigate to a default page.
@@ -48,14 +48,14 @@ const LoginPage = () => {
 
   return (
     <Container component="main" maxWidth="xs">
-      <Paper 
-        elevation={3} 
-        sx={{ 
-          marginTop: 8, 
-          display: 'flex', 
-          flexDirection: 'column', 
-          alignItems: 'center', 
-          padding: 4 
+      <Paper
+        elevation={3}
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          padding: 4
         }}
       >
         <Typography component="h1" variant="h5" gutterBottom>
@@ -66,13 +66,13 @@ const LoginPage = () => {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
             autoFocus
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
           <TextField
             margin="normal"

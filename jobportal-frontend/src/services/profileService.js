@@ -13,9 +13,7 @@ const profileService = {
   },
 
   uploadResume: async (file) => {
-    const formData = new FormData();
-    formData.append('resume', file); 
-    const response = await api.post('/profile/job-seeker/resume', formData, {
+    const response = await api.post('/profile/job-seeker/resume', file, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -23,7 +21,7 @@ const profileService = {
     return response.data;
   },
 
-  
+
   getEmployerProfile: async () => {
     const response = await api.get('/profile/employer');
     return response.data;

@@ -49,10 +49,10 @@ public class UserService {
 
         String userType = request.getUserType();
         String roleName;
-        if ("EMPLOYER".equalsIgnoreCase(userType)) {
-            roleName = "EMPLOYER";
-        } else if ("JOB_SEEKER".equalsIgnoreCase(userType)) {
-            roleName = "JOB_SEEKER";
+        if ("ROLE_EMPLOYER".equalsIgnoreCase(userType)) {
+            roleName = "ROLE_EMPLOYER";
+        } else if ("ROLE_JOB_SEEKER".equalsIgnoreCase(userType)) {
+            roleName = "ROLE_JOB_SEEKER";
         } else {
             throw new RuntimeException("Invalid userType: " + userType);
         }
@@ -70,11 +70,11 @@ public class UserService {
 
         User savedUser = userRepository.save(user); // Save the user and get the managed instance with ID
 
-        if ("EMPLOYER".equalsIgnoreCase(request.getUserType())) {
+        if ("ROLE_EMPLOYER".equalsIgnoreCase(request.getUserType())) {
             EmployerProfile employerProfile = new EmployerProfile(savedUser); // Pass managed User
             employerProfileRepository.save(employerProfile);
             // Optional: savedUser.setEmployerProfile(employerProfile); if you need the link in the current User object in memory
-        } else if ("JOB_SEEKER".equalsIgnoreCase(request.getUserType())) {
+        } else if ("ROLE_JOB_SEEKER".equalsIgnoreCase(request.getUserType())) {
             JobSeekerProfile jobSeekerProfile = new JobSeekerProfile(savedUser); // Pass managed User
             jobSeekerProfileRepository.save(jobSeekerProfile);
             // Optional: savedUser.setJobSeekerProfile(jobSeekerProfile);
