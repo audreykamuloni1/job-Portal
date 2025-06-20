@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -13,7 +13,6 @@ import Link from '@mui/material/Link';
 import { useLoading } from '../../contexts/LoadingContext'; // Adjust path as needed
 import { useAuth } from '../../contexts/AuthContext'; // Import useAuth
 import { showErrorToast } from '../../utils/notifications'; // Import showErrorToast
-import { useLocation } from 'react-router-dom';
 
 
 const LoginPage = () => {

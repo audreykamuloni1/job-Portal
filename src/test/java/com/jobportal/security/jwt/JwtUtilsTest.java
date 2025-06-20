@@ -7,10 +7,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.util.ReflectionTestUtils;
+
 import javax.crypto.SecretKey;
 import java.util.Base64;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 class JwtUtilsTest {
@@ -42,7 +45,7 @@ class JwtUtilsTest {
 
     @Test
     void testValidateJwtToken() {
-        String token = jwtUtils.generateJwtToken("test-user");
+        String token = jwtUtils.generateJwtToken("test-user", List.of("ROLE_ADMIN"));
         assertTrue(jwtUtils.validateJwtToken(token));
     }
 }

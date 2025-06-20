@@ -56,10 +56,10 @@ public class JobController {
         User employer = userRepository.findByUsername(userDetails.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException("Employer not found with username: " + userDetails.getUsername()));
 
-        
+
         Job job = jobMapper.toEntity(jobDTO);
         job.setEmployer(employer);
-        
+
         jobDTO.setEmployerId(employer.getId());
 
 
@@ -81,11 +81,11 @@ public class JobController {
         if (!existingJob.getEmployer().getId().equals(employer.getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // Or throw NotAuthorizedException
         }
-        
+
         // Preserve original creation date and employer, status is handled by service layer (preserves current status)
         jobDTO.setId(id); // Ensure DTO has the correct ID for mapping
         Job jobToUpdate = jobMapper.toEntity(jobDTO);
-        jobToUpdate.setEmployer(existingJob.getEmployer()); 
+        jobToUpdate.setEmployer(existingJob.getEmployer());
         jobToUpdate.setPostedDate(existingJob.getPostedDate()); // Keep original posted date
         // The status will be set by jobService.updateJob by fetching the existingJob's status.
 
@@ -97,7 +97,7 @@ public class JobController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ROLE_EMPLOYER')")
     public ResponseEntity<Void> deleteJob(@PathVariable Long id) {
-        
+
         jobService.deleteJob(id);
         return ResponseEntity.noContent().build();
     }

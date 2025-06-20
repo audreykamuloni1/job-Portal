@@ -1,13 +1,16 @@
 package com.jobportal.security.jwt;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class JwtUtils {
@@ -34,9 +37,9 @@ public class JwtUtils {
     public boolean validateJwtToken(String jwt) {
         try {
             Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(jwt);
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(jwt);
             System.out.println("JWT validation successful");
             return true;
         } catch (Exception e) {
@@ -47,19 +50,20 @@ public class JwtUtils {
 
     public String getUsernameFromJwtToken(String jwt) {
         return Jwts.parserBuilder()
-            .setSigningKey(getSigningKey())
-            .build()
-            .parseClaimsJws(jwt)
-            .getBody()
-            .getSubject();
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(jwt)
+                .getBody()
+                .getSubject();
     }
 
-    public String generateJwtToken(String username) {
+    public String generateJwtToken(String username, List<?> roles) {
         return Jwts.builder()
-            .setSubject(username)
-            .setIssuedAt(new Date())
-            .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
-            .signWith(getSigningKey(), SignatureAlgorithm.HS512)
-            .compact();
+                .setSubject(username)
+                .claim("roles", roles)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS512)
+                .compact();
     }
 }
