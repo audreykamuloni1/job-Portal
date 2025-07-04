@@ -96,9 +96,10 @@ public class JobController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ROLE_EMPLOYER')")
-    public ResponseEntity<Void> deleteJob(@PathVariable Long id) {
-        
-        jobService.deleteJob(id);
+    public ResponseEntity<Void> deleteJob(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+        User employer = userRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new ResourceNotFoundException("Employer not found with username: " + userDetails.getUsername()));
+        jobService.deleteJob(id, employer.getId());
         return ResponseEntity.noContent().build();
     }
 

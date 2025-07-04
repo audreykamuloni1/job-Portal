@@ -69,11 +69,15 @@ public class JobService {
     }
 
     @Transactional
-    public void deleteJob(Long id) {
-        if (!jobRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Job not found with id: " + id);
+    public void deleteJob(Long jobId, Long employerId) {
+        Job job = jobRepository.findById(jobId)
+                .orElseThrow(() -> new ResourceNotFoundException("Job not found with id: " + jobId));
+
+        if (!job.getEmployer().getId().equals(employerId)) {
+            // Consider a more specific exception like NotAuthorizedException or just return false/throw different error
+            throw new ResourceNotFoundException("User not authorized to delete this job or job not found.");
         }
-        jobRepository.deleteById(id);
+        jobRepository.deleteById(jobId);
     }
 
     @Transactional(readOnly = true)

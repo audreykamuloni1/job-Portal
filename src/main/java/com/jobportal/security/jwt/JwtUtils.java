@@ -3,6 +3,8 @@ package com.jobportal.security.jwt;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import java.security.Key;
@@ -11,6 +13,8 @@ import java.util.Date;
 
 @Component
 public class JwtUtils {
+
+    private static final Logger log = LoggerFactory.getLogger(JwtUtils.class);
 
     @Value("${jwt.secret}")
     private String jwtSecret;
@@ -37,12 +41,22 @@ public class JwtUtils {
                 .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(jwt);
-            System.out.println("JWT validation successful");
+            log.debug("JWT validation successful for token: {}", jwt);
             return true;
-        } catch (Exception e) {
-            System.out.println("JWT validation failed: " + e.getMessage());
-            return false;
+        } catch (SignatureException e) {
+            log.warn("Invalid JWT signature: {}", e.getMessage());
+        } catch (MalformedJwtException e) {
+            log.warn("Invalid JWT token: {}", e.getMessage());
+        } catch (ExpiredJwtException e) {
+            log.warn("JWT token is expired: {}", e.getMessage());
+        } catch (UnsupportedJwtException e) {
+            log.warn("JWT token is unsupported: {}", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            log.warn("JWT claims string is empty: {}", e.getMessage());
+        } catch (Exception e) { // Catch any other unexpected exceptions
+            log.error("JWT validation failed due to an unexpected error: {}", e.getMessage(), e);
         }
+        return false;
     }
 
     public String getUsernameFromJwtToken(String jwt) {
