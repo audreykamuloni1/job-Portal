@@ -16,14 +16,19 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (roleRepository.findByName("ROLE_EMPLOYER").isEmpty()) {
-            roleRepository.save(new Role("ROLE_EMPLOYER"));
+        // Store roles without the "ROLE_" prefix.
+        // UserDetailsServiceImpl will add the prefix when creating GrantedAuthority objects.
+        if (roleRepository.findByName("EMPLOYER").isEmpty()) {
+            roleRepository.save(new Role("EMPLOYER"));
+            System.out.println("Created EMPLOYER role");
         }
-        if (roleRepository.findByName("ROLE_JOB_SEEKER").isEmpty()) {
-            roleRepository.save(new Role("ROLE_JOB_SEEKER"));
+        if (roleRepository.findByName("JOB_SEEKER").isEmpty()) {
+            roleRepository.save(new Role("JOB_SEEKER"));
+            System.out.println("Created JOB_SEEKER role");
         }
-        if (roleRepository.findByName("ROLE_ADMIN").isEmpty()) {
-            roleRepository.save(new Role("ROLE_ADMIN"));
+        if (roleRepository.findByName("ADMIN").isEmpty()) {
+            roleRepository.save(new Role("ADMIN"));
+            System.out.println("Created ADMIN role");
         }
     }
 }
