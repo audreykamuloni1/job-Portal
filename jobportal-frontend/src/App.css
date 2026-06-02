@@ -1,0 +1,18 @@
+/* App.css - Minimize global styles to rely on MUI and CssBaseline */
+
+/* You can add very specific global overrides here if absolutely necessary, */
+/* but prefer using MUI's theming and sx prop or styled components. */
+
+/* Example:
+body {
+  // Example: A global scrollbar style if you want something custom
+  // Note: CssBaseline already provides a good base.
+}
+*/
+
+/* The .App class and .main-content class from previous versions are removed */
+/* as MainLayout.js now handles the primary layout structure. */
+/* Custom button styles (.btn-primary, etc.) are also removed as MUI Buttons will be used. */
+/* Loading spinner styles are removed; MUI has <CircularProgress />. */
+
+/* Keep this file minimal. */

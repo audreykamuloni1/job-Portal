@@ -1,0 +1,42 @@
+.manage-jobs-container {
+    display: flex;
+    gap: 20px;
+}
+.jobs-list-panel {
+    flex: 1;
+    border: 1px solid #ccc;
+    padding: 15px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+.jobs-list-panel ul {
+    list-style-type: none;
+    padding: 0;
+}
+.jobs-list-panel li {
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+}
+.jobs-list-panel li.selected {
+    background-color: #e0e0e0;
+}
+.applications-panel {
+    flex: 2;
+    border: 1px solid #ccc;
+    padding: 15px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+.application-card {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+}
+.error-message {
+    color: red;
+}
+.status-actions select {
+    margin-left: 10px;
+    padding: 5px;
+}
