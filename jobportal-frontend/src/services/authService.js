@@ -1,13 +1,7 @@
-import axios from 'axios';
-
-const API_URL = 'http://localhost:8091/api/auth/';
+import api from './api';
 
 const login = async (userData) => {
-  const response = await axios.post(
-    `${API_URL}login`,
-    userData,
-    { headers: { 'Content-Type': 'application/json' } }
-  );
+  const response = await api.post('/auth/login', userData);
  
   // Directly use response.data.roles as it's already an array of strings
   return {
@@ -20,9 +14,7 @@ const login = async (userData) => {
 };
 
 const register = async (userData) => {
-  const response = await axios.post(`${API_URL}register`, userData, {
-    headers: { 'Content-Type': 'application/json' }
-  });
+  const response = await api.post('/auth/register', userData);
   return response.data;
 };
 

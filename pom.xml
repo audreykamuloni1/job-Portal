@@ -60,6 +60,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <!-- JWT -->
@@ -87,6 +88,13 @@
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <scope>compile</scope> <!-- Changed from 'provided' to 'compile' -->
+        </dependency>
+
+        <!-- OpenAPI / Swagger UI for Interactive API Documentation -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.2.0</version>
         </dependency>
 
         <!-- Testing -->

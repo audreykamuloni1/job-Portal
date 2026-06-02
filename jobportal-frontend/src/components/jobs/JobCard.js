@@ -19,7 +19,7 @@ const JobCard = ({ job }) => {
   const { 
     id,
     title = "No Title Provided", 
-    companyName = "N/A", 
+    employerName = "N/A", 
     location = "N/A", 
     description = "No description available.", 
     postedDate = "N/A" // Assuming date is pre-formatted string
@@ -52,7 +52,7 @@ const JobCard = ({ job }) => {
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, color: 'text.secondary' }}>
           <BusinessIcon sx={{ mr: 1, fontSize: '1.1rem' }} />
           <Typography variant="subtitle1" color="text.secondary">
-            {companyName}
+            {employerName}
           </Typography>
         </Box>
         

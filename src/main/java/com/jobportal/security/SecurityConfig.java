@@ -63,6 +63,7 @@ public class SecurityConfig {
                 .requestMatchers(mvcMatcherBuilder.pattern("/h2-console/**")).permitAll()
                 .requestMatchers(mvcMatcherBuilder.pattern("/api/auth/**")).permitAll()
                 .requestMatchers(mvcMatcherBuilder.pattern("/api-docs/**")).permitAll()
+                .requestMatchers(mvcMatcherBuilder.pattern("/v3/api-docs/**")).permitAll()
                 .requestMatchers(mvcMatcherBuilder.pattern("/swagger-ui/**")).permitAll()
                 .requestMatchers(mvcMatcherBuilder.pattern("/swagger-ui.html")).permitAll()
                 .requestMatchers(mvcMatcherBuilder.pattern("/error")).permitAll()
